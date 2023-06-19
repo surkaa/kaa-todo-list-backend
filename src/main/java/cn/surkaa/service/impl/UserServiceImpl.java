@@ -73,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 账户密码是否包含其他字符
-        if (StringsUtils.isNotBelongLatterAndNumber(account, password, checkPassword)) {
+        if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
             return -1;
         }
 
