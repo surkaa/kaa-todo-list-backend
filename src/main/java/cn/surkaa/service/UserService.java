@@ -2,6 +2,7 @@ package cn.surkaa.service;
 
 import cn.surkaa.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author SurKaa
@@ -30,5 +31,24 @@ public interface UserService extends IService<User> {
      * @return 注册成功后的用户id
      */
     long userRegister(String account, String password, String checkPassword);
+
+    /**
+     * 用户登录
+     * <h2>登录逻辑 登录条件</h2>
+     *
+     * <ul>
+     *     <li>账户密码都不为空(不是null 不是空字符)</li>
+     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>密码不小于<strong>8</strong>位</li>
+     *     <li>账户不能以数字开头</li>
+     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     * </ul>
+     *
+     * @param account  登录账号
+     * @param password 登录密码
+     * @param request  请求
+     * @return 脱敏后的用户信息
+     */
+    User doLogin(String account, String password, HttpServletRequest request);
 
 }
