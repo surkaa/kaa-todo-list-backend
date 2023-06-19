@@ -29,4 +29,14 @@ public class UserMapperTest {
         System.out.println(page.getRecords());
     }
 
+    @Test
+    public void insertWithAvatarTest() {
+        User user = new User();
+        user.setUserAccount("2025");
+        user.setUserPassword("");
+        user.setAvatarId(1L);
+        int insert = mapper.insert(user);
+        System.out.println("insert = " + insert);
+    }
+
 }
