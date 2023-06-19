@@ -2,6 +2,7 @@ package cn.surkaa.mapper;
 
 import cn.surkaa.entity.UserAvatar;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
 * @author SurKaa
@@ -9,6 +10,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @createDate 2023-06-19 19:43:53
 * @Entity cn.surkaa.entity.UserAvatar
 */
+@Mapper
 public interface UserAvatarMapper extends BaseMapper<UserAvatar> {
 
 }
