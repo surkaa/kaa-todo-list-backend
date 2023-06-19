@@ -5,6 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.surkaa.entity.User;
 import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.service.UserService;
+import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
@@ -72,7 +73,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 账户密码是否包含其他字符
-        if (isContainOtherChar(account, password, checkPassword)) {
+        if (StringsUtils.isNotBelongLatterAndNumber(account, password, checkPassword)) {
             return -1;
         }
 
@@ -98,17 +99,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 成功返回
         return user.getId();
-    }
-
-    private boolean isContainOtherChar(String... strings) {
-        for (String string : strings) {
-            for (char c : string.toCharArray()) {
-                if (!CharUtil.isNumber(c) && !CharUtil.isLetter(c) && !CharUtil.isLetterUpper(c)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
 }
