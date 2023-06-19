@@ -8,6 +8,7 @@ import cn.surkaa.service.UserService;
 import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -24,6 +25,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
     // 混淆密码
     private static final String SALT = "surkaa";
+
+    // 保存在session中的登录状态
+    private static final String LOGIN_STATE = "login_state";
 
     /**
      * 用户注册
@@ -99,6 +103,88 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 成功返回
         return user.getId();
+    }
+
+    /**
+     * 用户登录
+     * <h2>登录逻辑 登录条件</h2>
+     *
+     * <ul>
+     *     <li>账户密码都不为空(不是null 不是空字符)</li>
+     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>密码不小于<strong>8</strong>位</li>
+     *     <li>账户不能以数字开头</li>
+     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     * </ul>
+     *
+     * @param account  登录账号
+     * @param password 登录密码
+     * @param request  请求
+     * @return 脱敏后的用户信息
+     */
+    @Override
+    public User doLogin(String account, String password, HttpServletRequest request) {
+        // 是否为空
+        if (StrUtil.hasBlank(account, password)) {
+            return null;
+        }
+
+        // 账号长度是否不小于6位
+        if (account.length() < 6) {
+            return null;
+        }
+
+        // 密码是否不小于8位
+        if (password.length() < 8) {
+            return null;
+        }
+
+        // 账户是否以数字开头
+        if (CharUtil.isNumber(account.charAt(0))) {
+            return null;
+        }
+
+        // 账户密码是否包含其他字符
+        if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
+            return null;
+        }
+
+        String encryptPassword = DigestUtils.md5DigestAsHex(
+                (SALT + password).getBytes(StandardCharsets.UTF_8)
+        );
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        lqw
+                .eq(User::getUserAccount, account)
+                .eq(User::getUserPassword, encryptPassword);
+        User user = this.baseMapper.selectOne(lqw);
+        if (user == null) {
+            // 获取失败
+            return null;
+        }
+        User safeUser = createSafeUser(user);
+
+        // 将登录状态记录到请求体的session中
+        request.getSession().setAttribute(LOGIN_STATE, safeUser);
+
+        return safeUser;
+    }
+
+
+    public static User createSafeUser(User user) {
+        User safeUser = new User();
+        safeUser.setId(user.getId());
+        safeUser.setUserAccount(user.getUserAccount());
+        safeUser.setUsername(user.getUsername());
+        safeUser.setAvatarId(user.getAvatarId());
+        safeUser.setGender(user.getGender());
+        safeUser.setPhone(user.getPhone());
+        safeUser.setEmail(user.getEmail());
+        safeUser.setCreateTime(user.getCreateTime());
+        safeUser.setUpdateTime(user.getUpdateTime());
+        safeUser.setUserStatus(user.getUserStatus());
+        // 逻辑删除
+        // safeUser.setIsDelete(user.getIsDelete());
+        return safeUser;
     }
 
 }
