@@ -1,0 +1,23 @@
+server:
+  port: 8000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.101.74.182:3306/user_center
+    username: kaa
+    password:
+  application:
+    name: User-Center
+
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+
+logging:
+  level:
+    cn.surkaa: debug
+  pattern:
+    dateformat: yyyy-MM-dd HH:mm:ss.SSS(XXX)
+  file:
+    name: log/book-server.log
