@@ -18,6 +18,7 @@
 
         <!-- dependency version -->
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
+        <hutool.version>5.8.18</hutool.version>
     </properties>
     <dependencies>
         <dependency>
@@ -61,6 +62,12 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>${mybatis-plus.version}</version>
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
