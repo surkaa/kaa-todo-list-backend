@@ -21,3 +21,10 @@ logging:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS(XXX)
   file:
     name: log/book-server.log
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: flag  # 全局配置逻辑删除的表字段名 也可以在对应字段添加@TableLogic
+      logic-delete-value: 1     # 删除的值
+      logic-not-delete-value: 0 # 未删除的值
