@@ -37,11 +37,17 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
                 log.debug("因此请求正是登录请求 放行");
                 return true;
             }
+            // 未登录 但是正打算注册的直接放行
+            if ("/users/register".equals(request.getRequestURI())) {
+                log.debug("因此请求正是注册请求 放行");
+                return true;
+            }
             String direct = request.getContextPath() + "/users/login";
             log.info("将即将跳转到登陆页面: {}", direct);
             response.sendRedirect(direct);
             return false;
         }
+        log.debug("已经登录!");
         return true;
     }
 }
