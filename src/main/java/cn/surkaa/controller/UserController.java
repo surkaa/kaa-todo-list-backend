@@ -43,7 +43,7 @@ public class UserController {
         return ResponseResult.ofRun(() -> {
             long userId = userService.userRegister(registerRequest);
             log.debug("注册所得用户id={}", userId);
-            return ResponseResult.succeed(userId);
+            return userId;
         });
     }
 
@@ -71,7 +71,7 @@ public class UserController {
                     request
             );
             log.debug("登陆成功: safeUser={}", safeUser);
-            return ResponseResult.succeed(safeUser);
+            return safeUser;
         });
     }
 
