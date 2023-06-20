@@ -33,9 +33,10 @@ public class UserAgentInterceptor implements HandlerInterceptor {
             return false;
         }
         UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
-        log.debug("from os={}, browser={}, ip={}, url={}, method={}",
-                userAgent.getOs(),
+        log.debug("from os={}, browser={}, engine={}, ip={}, url={}, method={}",
+                userAgent.getPlatform(),
                 userAgent.getBrowser(),
+                userAgent.getEngine(),
                 ip,
                 request.getRequestURI(),
                 request.getMethod()
