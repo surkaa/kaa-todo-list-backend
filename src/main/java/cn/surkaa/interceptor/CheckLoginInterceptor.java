@@ -30,6 +30,10 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
             User user = (User) Objects.requireNonNull(o);
             Objects.requireNonNull(user);
         } catch (Exception e) {
+            // 未登录 但是正打算登录的直接放行
+            if ("/users/login".equals(request.getRequestURI())) {
+                return true;
+            }
             String direct = request.getContextPath() + "/users/login";
             log.info("检测到用户未登录 请登录再尝试 将即将跳转到登陆页面: {}", direct);
             response.sendRedirect(direct);
