@@ -1,6 +1,8 @@
 package cn.surkaa.service;
 
 import cn.surkaa.module.User;
+import cn.surkaa.module.request.UserLoginRequest;
+import cn.surkaa.module.request.UserRegisterRequest;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,10 +28,13 @@ public interface UserService extends IService<User> {
      *     <li>对密码进行加密保存</li>
      * </ul>
      *
-     * @param account       注册账号
-     * @param password      注册密码
-     * @param checkPassword 确认密码
+     * @param registerRequest 注册请求体
      * @return 注册成功后的用户id
+     */
+    Long userRegister(UserRegisterRequest registerRequest);
+
+    /**
+     * 用户注册 {@link #userRegister(UserRegisterRequest)}的拆箱
      */
     Long userRegister(String account, String password, String checkPassword);
 
@@ -45,10 +50,14 @@ public interface UserService extends IService<User> {
      *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
      * </ul>
      *
-     * @param account  登录账号
-     * @param password 登录密码
-     * @param request  请求
+     * @param loginRequest 登录请求体
+     * @param request      请求
      * @return 脱敏后的用户信息
+     */
+    User doLogin(UserLoginRequest loginRequest, HttpServletRequest request);
+
+    /**
+     * 用户登录 {@link #doLogin(UserLoginRequest, HttpServletRequest)}的拆箱
      */
     User doLogin(String account, String password, HttpServletRequest request);
 

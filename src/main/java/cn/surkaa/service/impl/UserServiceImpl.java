@@ -4,6 +4,8 @@ import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.module.User;
+import cn.surkaa.module.request.UserLoginRequest;
+import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
 import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -44,13 +46,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      *     <li>对密码进行加密保存</li>
      * </ul>
      *
-     * @param account       注册账号
-     * @param password      注册密码
-     * @param checkPassword 确认密码
+     * @param registerRequest 注册请求体
      * @return 注册成功后的用户id
      */
     @Override
-    public Long userRegister(String account, String password, String checkPassword) {
+    public Long userRegister(UserRegisterRequest registerRequest) {
+
+        String account = registerRequest.getAccount();
+        String password = registerRequest.getPassword();
+        String checkPassword = registerRequest.getCheckPassword();
 
         // 是否为空
         if (StrUtil.hasBlank(account, password, checkPassword)) {
@@ -116,13 +120,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
      * </ul>
      *
-     * @param account  登录账号
-     * @param password 登录密码
-     * @param request  请求
+     * @param loginRequest 登录请求体
+     * @param request      请求
      * @return 脱敏后的用户信息
      */
     @Override
-    public User doLogin(String account, String password, HttpServletRequest request) {
+    public User doLogin(UserLoginRequest loginRequest, HttpServletRequest request) {
+
+        String account = loginRequest.getAccount();
+        String password = loginRequest.getPassword();
+
         // 是否为空
         if (StrUtil.hasBlank(account, password)) {
             return null;
@@ -191,6 +198,32 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 username
         );
         return this.page(page, lqw);
+    }
+
+    /**
+     * 用户注册
+     *
+     * @param account       注册账户
+     * @param password      注册密码
+     * @param checkPassword 确认密码
+     * @return 成功注册的用户id
+     */
+    @Override
+    public Long userRegister(String account, String password, String checkPassword) {
+        return userRegister(new UserRegisterRequest(account, password, checkPassword));
+    }
+
+    /**
+     * 登录
+     *
+     * @param account  账号
+     * @param password 密码
+     * @param request  请求体
+     * @return 请求所得用户
+     */
+    @Override
+    public User doLogin(String account, String password, HttpServletRequest request) {
+        return doLogin(new UserLoginRequest(account, password), request);
     }
 
     private String getEncryptPassword(String originPassword) {

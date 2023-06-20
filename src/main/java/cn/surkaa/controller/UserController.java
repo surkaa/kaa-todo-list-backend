@@ -37,12 +37,7 @@ public class UserController {
             return ResponseResult.error(ErrorEnum.REQUEST_ERROR);
         }
         return ResponseResult.ofRun(() -> {
-            //TODO 可以改为直接传入注册请求体
-            long userId = userService.userRegister(
-                    registerRequest.getAccount(),
-                    registerRequest.getPassword(),
-                    registerRequest.getCheckPassword()
-            );
+            long userId = userService.userRegister(registerRequest);
             return ResponseResult.succeed(userId);
         });
     }
@@ -65,9 +60,7 @@ public class UserController {
         }
         return ResponseResult.ofRun(() -> {
             User safeUser = userService.doLogin(
-                    //TODO 可以改为直接传入登录请求体
-                    loginRequest.getAccount(),
-                    loginRequest.getPassword(),
+                    loginRequest,
                     request
             );
             return ResponseResult.succeed(safeUser);

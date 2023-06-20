@@ -1,6 +1,8 @@
 package cn.surkaa.module.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -9,6 +11,8 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserRegisterRequest implements Serializable {
 
     @Serial
