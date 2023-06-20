@@ -1,7 +1,7 @@
 package cn.surkaa.controller;
 
 import cn.surkaa.module.User;
-import cn.surkaa.module.request.RequestResult;
+import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
@@ -26,22 +26,22 @@ public class UserController {
      * 注册逻辑 表现层
      *
      * @param registerRequest 注册请求体
-     * @return {@link RequestResult}
+     * @return {@link ResponseResult}
      */
     @PostMapping("/register")
-    public RequestResult register(
+    public ResponseResult register(
             @RequestBody UserRegisterRequest registerRequest
     ) {
         if (registerRequest == null) {
             // 请求体为空
-            return RequestResult.failed();
+            return ResponseResult.failed();
         }
         long userId = userService.userRegister(
                 registerRequest.getAccount(),
                 registerRequest.getPassword(),
                 registerRequest.getCheckPassword()
         );
-        return RequestResult.succeed(userId);
+        return ResponseResult.succeed(userId);
     }
 
     /**
@@ -49,32 +49,32 @@ public class UserController {
      *
      * @param loginRequest 登录请求体
      * @param request      请求
-     * @return {@link RequestResult}
+     * @return {@link ResponseResult}
      */
     @PostMapping("/login")
-    public RequestResult login(
+    public ResponseResult login(
             @RequestBody UserLoginRequest loginRequest,
             HttpServletRequest request
     ) {
         if (loginRequest == null) {
             // 请求体为空
-            return RequestResult.failed();
+            return ResponseResult.failed();
         }
         User safeUser = userService.doLogin(
                 loginRequest.getAccount(),
                 loginRequest.getPassword(),
                 request
         );
-        return RequestResult.succeed(safeUser);
+        return ResponseResult.succeed(safeUser);
     }
 
     @GetMapping("/search/{currentPage}/{pageSize}/{username}")
-    public RequestResult search(
+    public ResponseResult search(
             @PathVariable String username,
             @PathVariable long currentPage,
             @PathVariable long pageSize
     ) {
         IPage<User> page = userService.search(username, currentPage, pageSize);
-        return RequestResult.succeed(page);
+        return ResponseResult.succeed(page);
     }
 }

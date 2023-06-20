@@ -9,7 +9,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class RequestResult implements Serializable {
+public class ResponseResult implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 2930639290615220583L;
@@ -30,7 +30,7 @@ public class RequestResult implements Serializable {
      * @param data    数据
      * @param message 信息
      */
-    public RequestResult(boolean flag, Object data, String message) {
+    public ResponseResult(boolean flag, Object data, String message) {
         this.flag = flag;
         this.data = data;
         this.message = message;
@@ -39,61 +39,61 @@ public class RequestResult implements Serializable {
     /**
      * 直接失败 无提示信息
      *
-     * @return flag=false & message=null 的{@link RequestResult RequestResult}
+     * @return flag=false & message=null 的{@link ResponseResult ResponseResult}
      */
-    public static RequestResult failed() {
-        return new RequestResult(false, null, null);
+    public static ResponseResult failed() {
+        return new ResponseResult(false, null, null);
     }
 
     /**
      * 直接失败并包含提示信息
      *
-     * @return flag=false的{@link RequestResult RequestResult}
+     * @return flag=false的{@link ResponseResult ResponseResult}
      */
-    public static RequestResult failed(String message) {
-        return new RequestResult(false, null, message);
+    public static ResponseResult failed(String message) {
+        return new ResponseResult(false, null, message);
     }
 
     /**
      * 没有返回值的成功结果
      *
-     * @return flag=true的{@link RequestResult RequestResult}
+     * @return flag=true的{@link ResponseResult ResponseResult}
      */
-    public static RequestResult succeed() {
-        return new RequestResult(true, null, null);
+    public static ResponseResult succeed() {
+        return new ResponseResult(true, null, null);
     }
 
     /**
      * 成功获取 结果在data中
      *
      * @param data 获取得到的数据
-     * @return flag=true包含数据的 {@link RequestResult RequestResult}
+     * @return flag=true包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static RequestResult succeed(Object data) {
-        return new RequestResult(true, data, null);
+    public static ResponseResult succeed(Object data) {
+        return new ResponseResult(true, data, null);
     }
 
     /**
      * 成功获取并包含提示信息
      *
      * @param data 获取得到的数据
-     * @return flag=true包含数据的 {@link RequestResult RequestResult}
+     * @return flag=true包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static RequestResult succeed(Object data, String message) {
-        return new RequestResult(true, data, message);
+    public static ResponseResult succeed(Object data, String message) {
+        return new ResponseResult(true, data, message);
     }
 
     /**
      * 无数据的根据条件生成的Result
      *
      * @param condition 条件
-     * @return flag=condition包含数据的 {@link RequestResult RequestResult}
+     * @return flag=condition包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static RequestResult condition(boolean condition) {
+    public static ResponseResult condition(boolean condition) {
         if (condition) {
-            return RequestResult.succeed();
+            return ResponseResult.succeed();
         } else {
-            return RequestResult.failed();
+            return ResponseResult.failed();
         }
     }
 
@@ -101,15 +101,15 @@ public class RequestResult implements Serializable {
      * 根据某段代码(函数式接口的实现)运行是否报错生成Result
      *
      * @param execute 代码(函数式接口) {@link ResultExecute ResultExecute}
-     * @return {@link RequestResult RequestResult}
+     * @return {@link ResponseResult ResponseResult}
      */
-    public static RequestResult ofRun(ResultExecute execute) {
+    public static ResponseResult ofRun(ResultExecute execute) {
         try {
             Object data = execute.execute();
-            return RequestResult.succeed(data);
+            return ResponseResult.succeed(data);
         } catch (Exception e) {
             e.printStackTrace();
-            return RequestResult.failed("服务器故障... 请稍后再试");
+            return ResponseResult.failed("服务器故障... 请稍后再试");
         }
     }
 
