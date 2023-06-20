@@ -1,5 +1,6 @@
 package cn.surkaa.module.request;
 
+import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.error.ErrorEnum;
 import lombok.Data;
 
@@ -141,8 +142,10 @@ public class ResponseResult<T> implements Serializable {
         try {
             Object data = execute.execute();
             return ResponseResult.succeed(data);
+        } catch (AuthenticationException e) {
+            return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());
         } catch (Exception e) {
-            return ResponseResult.error(ErrorEnum.SYSTEM_ERROR, "bug待解决");
+            return ResponseResult.error(ErrorEnum.SYSTEM_ERROR, "from ofRun: bug待解决...");
         }
     }
 
