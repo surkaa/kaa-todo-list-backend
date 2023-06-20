@@ -29,7 +29,9 @@ public class UserController {
      * @return {@link RequestResult}
      */
     @PostMapping("/register")
-    public RequestResult register(@RequestBody UserRegisterRequest registerRequest) {
+    public RequestResult register(
+            @RequestBody UserRegisterRequest registerRequest
+    ) {
         if (registerRequest == null) {
             // 请求体为空
             return RequestResult.failed();
@@ -65,7 +67,6 @@ public class UserController {
         );
         return RequestResult.succeed(safeUser);
     }
-
 
     @GetMapping("/search/{currentPage}/{pageSize}/{username}")
     public RequestResult search(

@@ -2,8 +2,8 @@ package cn.surkaa.service.impl;
 
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.surkaa.module.User;
 import cn.surkaa.mapper.UserMapper;
+import cn.surkaa.module.User;
 import cn.surkaa.service.UserService;
 import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
+
+import static cn.surkaa.contant.UserContant.LOGIN_STATE;
 
 /**
  * @author SurKaa
@@ -160,7 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         // 将登录状态记录到请求体的session中
         if (request == null) {
-            // 五八将登录状态保存
+            // 无法将登录状态保存
             return safeUser;
         }
         request.getSession().setAttribute(LOGIN_STATE, safeUser);
