@@ -7,6 +7,8 @@ import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.service.UserService;
 import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
@@ -164,6 +166,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         request.getSession().setAttribute(LOGIN_STATE, safeUser);
 
         return safeUser;
+    }
+
+    /**
+     * 根据用户昵称搜索用户并分页
+     *
+     * @param username    用户昵称
+     * @param currentPage 当前页号
+     * @param pageSize    页大小
+     * @return 分页结果
+     */
+    @Override
+    public IPage<User> search(String username, long currentPage, long pageSize) {
+        // 分页对象
+        PageDTO<User> page = new PageDTO<>(currentPage, pageSize);
+        // 条件查询对象
+        LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
+        // 配置昵称相似条件
+        lqw.like(
+                StrUtil.isNotBlank(username),
+                User::getUsername,
+                username
+        );
+        return this.page(page, lqw);
     }
 
     private String getEncryptPassword(String originPassword) {

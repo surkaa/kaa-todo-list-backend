@@ -1,6 +1,7 @@
 package cn.surkaa.service;
 
 import cn.surkaa.module.User;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -53,5 +54,15 @@ public interface UserService extends IService<User> {
      * @return 脱敏后的用户信息
      */
     User doLogin(String account, String password, HttpServletRequest request);
+
+    /**
+     * 根据用户昵称搜索用户并分页
+     *
+     * @param username    用户昵称
+     * @param currentPage 当前页号
+     * @param pageSize    页大小
+     * @return 分页结果
+     */
+    IPage<User> search(String username, long currentPage, long pageSize);
 
 }
