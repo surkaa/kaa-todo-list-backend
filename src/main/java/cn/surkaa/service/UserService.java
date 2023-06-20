@@ -11,6 +11,9 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public interface UserService extends IService<User> {
 
+    // 保存在session中的登录状态
+    String LOGIN_STATE = "login_state";
+
     /**
      * 用户注册
      * <h2>注册逻辑 注册条件</h2>

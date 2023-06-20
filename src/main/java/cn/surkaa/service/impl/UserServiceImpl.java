@@ -26,9 +26,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     // 混淆密码
     private static final String SALT = "surkaa";
 
-    // 保存在session中的登录状态
-    private static final String LOGIN_STATE = "login_state";
-
     /**
      * 用户注册
      * <h2>注册逻辑 注册条件</h2>
@@ -90,9 +87,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
 
         // 将密码加密保存
-        String encryptPassword = DigestUtils.md5DigestAsHex(
-                (SALT + password).getBytes(StandardCharsets.UTF_8)
-        );
+        String encryptPassword = getEncryptPassword(password);
         User user = new User();
         user.setUserAccount(account);
         user.setUserPassword(encryptPassword);
@@ -149,9 +144,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             return null;
         }
 
-        String encryptPassword = DigestUtils.md5DigestAsHex(
-                (SALT + password).getBytes(StandardCharsets.UTF_8)
-        );
+        String encryptPassword = getEncryptPassword(password);
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw
                 .eq(User::getUserAccount, account)
@@ -164,11 +157,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User safeUser = createSafeUser(user);
 
         // 将登录状态记录到请求体的session中
+        if (request == null) {
+            // 五八将登录状态保存
+            return safeUser;
+        }
         request.getSession().setAttribute(LOGIN_STATE, safeUser);
 
         return safeUser;
     }
 
+    private String getEncryptPassword(String originPassword) {
+        return DigestUtils.md5DigestAsHex(
+                (SALT + originPassword).getBytes(StandardCharsets.UTF_8)
+        );
+    }
 
     public static User createSafeUser(User user) {
         User safeUser = new User();
