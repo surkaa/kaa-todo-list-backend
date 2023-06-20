@@ -5,11 +5,9 @@ import cn.surkaa.module.request.RequestResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author SurKaa
@@ -66,5 +64,16 @@ public class UserController {
                 request
         );
         return RequestResult.succeed(safeUser);
+    }
+
+
+    @GetMapping("/search/{currentPage}/{pageSize}/{username}")
+    public RequestResult search(
+            @PathVariable String username,
+            @PathVariable long currentPage,
+            @PathVariable long pageSize
+    ) {
+        IPage<User> page = userService.search(username, currentPage, pageSize);
+        return RequestResult.succeed(page);
     }
 }
