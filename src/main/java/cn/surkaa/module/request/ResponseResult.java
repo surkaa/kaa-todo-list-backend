@@ -9,87 +9,95 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
-public class ResponseResult implements Serializable {
+@SuppressWarnings("unused")
+public class ResponseResult<T> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 2930639290615220583L;
 
-    // 是否成功
-    private final boolean flag;
+    /**
+     * 错误代码
+     * 成功为0 否则失败
+     */
+    private final int code;
 
     // 数据
-    private final Object data;
+    private final T data;
 
     // 信息
     private final String message;
 
+    // 详细信息
+    private final String description;
+
     /**
      * 构造
      *
-     * @param flag    是否成功
+     * @param code    返回代码
      * @param data    数据
      * @param message 信息
      */
-    public ResponseResult(boolean flag, Object data, String message) {
-        this.flag = flag;
+    public ResponseResult(int code, T data, String message, String description) {
+        this.code = code;
         this.data = data;
         this.message = message;
+        this.description = description;
     }
 
     /**
      * 直接失败 无提示信息
      *
-     * @return flag=false & message=null 的{@link ResponseResult ResponseResult}
+     * @return code=-1 & message=null 的{@link ResponseResult ResponseResult}
      */
-    public static ResponseResult failed() {
-        return new ResponseResult(false, null, null);
+    public static ResponseResult<Object> failed() {
+        return new ResponseResult<>(-1, null, "", "");
     }
 
     /**
      * 直接失败并包含提示信息
      *
-     * @return flag=false的{@link ResponseResult ResponseResult}
+     * @return code=-1的{@link ResponseResult ResponseResult}
      */
-    public static ResponseResult failed(String message) {
-        return new ResponseResult(false, null, message);
+    public static ResponseResult<Object> failed(String message) {
+        return new ResponseResult<>(-1, null, message, "");
     }
 
     /**
      * 没有返回值的成功结果
      *
-     * @return flag=true的{@link ResponseResult ResponseResult}
+     * @return code=true的{@link ResponseResult ResponseResult}
      */
-    public static ResponseResult succeed() {
-        return new ResponseResult(true, null, null);
+    public static ResponseResult<Object> succeed() {
+        return new ResponseResult<>(0, null, null, "");
     }
 
     /**
      * 成功获取 结果在data中
      *
      * @param data 获取得到的数据
-     * @return flag=true包含数据的 {@link ResponseResult ResponseResult}
+     * @return code=true包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static ResponseResult succeed(Object data) {
-        return new ResponseResult(true, data, null);
+    public static <T> ResponseResult<T> succeed(T data) {
+        return new ResponseResult<>(0, data, null, "");
     }
 
     /**
      * 成功获取并包含提示信息
      *
      * @param data 获取得到的数据
-     * @return flag=true包含数据的 {@link ResponseResult ResponseResult}
+     * @return code=true包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static ResponseResult succeed(Object data, String message) {
-        return new ResponseResult(true, data, message);
+    public static <T> ResponseResult<T> succeed(T data, String message) {
+        return new ResponseResult<>(0, data, message, "");
     }
 
     /**
      * 无数据的根据条件生成的Result
      *
      * @param condition 条件
-     * @return flag=condition包含数据的 {@link ResponseResult ResponseResult}
+     * @return code=condition包含数据的 {@link ResponseResult ResponseResult}
      */
-    public static ResponseResult condition(boolean condition) {
+    public static ResponseResult<Object> condition(boolean condition) {
         if (condition) {
             return ResponseResult.succeed();
         } else {
@@ -103,7 +111,7 @@ public class ResponseResult implements Serializable {
      * @param execute 代码(函数式接口) {@link ResultExecute ResultExecute}
      * @return {@link ResponseResult ResponseResult}
      */
-    public static ResponseResult ofRun(ResultExecute execute) {
+    public static ResponseResult<?> ofRun(ResultExecute execute) {
         try {
             Object data = execute.execute();
             return ResponseResult.succeed(data);
