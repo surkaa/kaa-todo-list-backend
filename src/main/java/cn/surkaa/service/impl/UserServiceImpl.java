@@ -209,6 +209,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         safeUser.setCreateTime(user.getCreateTime());
         safeUser.setUpdateTime(user.getUpdateTime());
         safeUser.setUserStatus(user.getUserStatus());
+        safeUser.setUserRole(user.getUserRole());
         // 逻辑删除
         // safeUser.setIsDelete(user.getIsDelete());
         return safeUser;

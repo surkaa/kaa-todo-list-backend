@@ -21,3 +21,6 @@ create table if not exists user
     primary key (id),
     foreign key (avatar_id) references user_avatar (id)
 ) comment '用户';
+# 添加用户角色列
+alter table user
+    add user_role tinyint default 0 not null comment '用户角色';
