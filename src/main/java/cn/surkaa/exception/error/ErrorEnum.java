@@ -10,6 +10,8 @@ public enum ErrorEnum {
     SUCCESS(0, "success"),
     PARAM_ERROR(5000, "参数问题"),
     REQUEST_ERROR(6000, "空请求"),
+    LOGIN_NOTFOUND_USER_ERROR(6100, "没有找到要登陆的用户"),
+    LOGIN_PASSWORD_ERROR(6101, "登录密码错误"),
     SYSTEM_ERROR(10000, "服务器故障...");
 
     private final int code;

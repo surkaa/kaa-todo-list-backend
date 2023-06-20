@@ -23,6 +23,10 @@ public class LoginException extends RuntimeException {
         this(errorEnum.getCode(), errorEnum.getMessage(), description);
     }
 
+    public LoginException(ErrorEnum errorEnum) {
+        this(errorEnum.getCode(), errorEnum.getMessage(), "");
+    }
+
     public int getCode() {
         return code;
     }

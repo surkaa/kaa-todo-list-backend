@@ -2,6 +2,8 @@ package cn.surkaa.service.impl;
 
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.surkaa.exception.LoginException;
+import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.module.User;
 import cn.surkaa.module.request.UserLoginRequest;
@@ -145,44 +147,46 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 是否为空
         if (StrUtil.hasBlank(account, password)) {
             log.debug("账号或者密码为空");
-            return null;
+            throw new LoginException(ErrorEnum.PARAM_ERROR, "账号或者密码为空");
         }
 
         // 账号长度是否不小于6位
         if (account.length() < 6) {
             log.debug("登录账户长度小于6位");
-            return null;
+            throw new LoginException(ErrorEnum.PARAM_ERROR, "登录账户长度小于6位");
         }
 
         // 密码是否不小于8位
         if (password.length() < 8) {
             log.debug("登录密码小于8位");
-            return null;
+            throw new LoginException(ErrorEnum.PARAM_ERROR, "登录密码小于8位");
         }
 
         // 账户是否以数字开头
         if (CharUtil.isNumber(account.charAt(0))) {
             log.debug("账户不能以数字开头");
-            return null;
+            throw new LoginException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
         }
 
         // 账户密码是否包含其他字符
         if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
             log.debug("账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-            return null;
+            throw new LoginException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
         }
 
+        // 获取加密后的密码
         String encryptPassword = getEncryptPassword(password);
+        // 条件查询匹配账号的用户
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
-        lqw
-                .eq(User::getUserAccount, account)
-                .eq(User::getUserPassword, encryptPassword);
+        lqw.eq(User::getUserAccount, account);
         User user = this.baseMapper.selectOne(lqw);
         if (user == null) {
-            // TODO 没有账户还是密码输入错误
-            log.debug("没有该账户或者密码输入错误");
-            // 获取失败
-            return null;
+            log.debug("没有找到账户匹配的信息");
+            throw new LoginException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
+        }
+        if (!user.getUserPassword().equals(encryptPassword)) {
+            log.debug("密码不正确");
+            throw new LoginException(ErrorEnum.LOGIN_PASSWORD_ERROR);
         }
         User safeUser = createSafeUser(user);
 
@@ -190,8 +194,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 将登录状态记录到请求体的session中
         if (request == null) {
             // 无法将登录状态保存
-            log.debug("保存失败 请求体为空");
-            return safeUser;
+            log.debug("保存失败");
+            throw new LoginException(ErrorEnum.SYSTEM_ERROR);
         }
         request.getSession().setAttribute(LOGIN_STATE, safeUser);
 
