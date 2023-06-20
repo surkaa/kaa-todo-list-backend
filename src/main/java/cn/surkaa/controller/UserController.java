@@ -1,11 +1,11 @@
 package cn.surkaa.controller;
 
+import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.User;
 import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,19 +29,22 @@ public class UserController {
      * @return {@link ResponseResult}
      */
     @PostMapping("/register")
-    public ResponseResult register(
+    public ResponseResult<?> register(
             @RequestBody UserRegisterRequest registerRequest
     ) {
         if (registerRequest == null) {
             // 请求体为空
-            return ResponseResult.failed();
+            return ResponseResult.error(ErrorEnum.REQUEST_ERROR);
         }
-        long userId = userService.userRegister(
-                registerRequest.getAccount(),
-                registerRequest.getPassword(),
-                registerRequest.getCheckPassword()
-        );
-        return ResponseResult.succeed(userId);
+        return ResponseResult.ofRun(() -> {
+            //TODO 可以改为直接传入注册请求体
+            long userId = userService.userRegister(
+                    registerRequest.getAccount(),
+                    registerRequest.getPassword(),
+                    registerRequest.getCheckPassword()
+            );
+            return ResponseResult.succeed(userId);
+        });
     }
 
     /**
@@ -52,29 +55,33 @@ public class UserController {
      * @return {@link ResponseResult}
      */
     @PostMapping("/login")
-    public ResponseResult login(
+    public ResponseResult<?> login(
             @RequestBody UserLoginRequest loginRequest,
             HttpServletRequest request
     ) {
         if (loginRequest == null) {
             // 请求体为空
-            return ResponseResult.failed();
+            return ResponseResult.error(ErrorEnum.REQUEST_ERROR);
         }
-        User safeUser = userService.doLogin(
-                loginRequest.getAccount(),
-                loginRequest.getPassword(),
-                request
-        );
-        return ResponseResult.succeed(safeUser);
+        return ResponseResult.ofRun(() -> {
+            User safeUser = userService.doLogin(
+                    //TODO 可以改为直接传入登录请求体
+                    loginRequest.getAccount(),
+                    loginRequest.getPassword(),
+                    request
+            );
+            return ResponseResult.succeed(safeUser);
+        });
     }
 
     @GetMapping("/search/{currentPage}/{pageSize}/{username}")
-    public ResponseResult search(
+    public ResponseResult<?> search(
             @PathVariable String username,
             @PathVariable long currentPage,
             @PathVariable long pageSize
     ) {
-        IPage<User> page = userService.search(username, currentPage, pageSize);
-        return ResponseResult.succeed(page);
+        return ResponseResult.ofRun(
+                () -> userService.search(username, currentPage, pageSize)
+        );
     }
 }

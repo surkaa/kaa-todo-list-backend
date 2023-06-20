@@ -1,5 +1,6 @@
 package cn.surkaa.module.request;
 
+import cn.surkaa.exception.error.ErrorEnum;
 import lombok.Data;
 
 import java.io.Serial;
@@ -49,8 +50,8 @@ public class ResponseResult<T> implements Serializable {
      *
      * @return code=-1 & message=null 的{@link ResponseResult ResponseResult}
      */
-    public static ResponseResult<Object> failed() {
-        return new ResponseResult<>(-1, null, "", "");
+    public static ResponseResult<Object> error() {
+        return new ResponseResult<>(-1, null, "failed", "");
     }
 
     /**
@@ -58,8 +59,29 @@ public class ResponseResult<T> implements Serializable {
      *
      * @return code=-1的{@link ResponseResult ResponseResult}
      */
-    public static ResponseResult<Object> failed(String message) {
+    public static ResponseResult<Object> error(String message) {
         return new ResponseResult<>(-1, null, message, "");
+    }
+
+    /**
+     * 直接失败并包含提示信息
+     *
+     * @return code=-1的{@link ResponseResult ResponseResult}
+     */
+    public static ResponseResult<Object> error(int code, String message, String description) {
+        return new ResponseResult<>(code, null, message, description);
+    }
+
+    public static ResponseResult<?> error(ErrorEnum error) {
+        return new ResponseResult<>(
+                error.getCode(), null, error.getMessage(), ""
+        );
+    }
+
+    public static ResponseResult<?> error(ErrorEnum error, String description) {
+        return new ResponseResult<>(
+                error.getCode(), null, error.getMessage(), description
+        );
     }
 
     /**
@@ -91,6 +113,10 @@ public class ResponseResult<T> implements Serializable {
         return new ResponseResult<>(0, data, message, "");
     }
 
+    public static <T> ResponseResult<T> succeed(T data, String message, String description) {
+        return new ResponseResult<>(0, data, message, description);
+    }
+
     /**
      * 无数据的根据条件生成的Result
      *
@@ -101,7 +127,7 @@ public class ResponseResult<T> implements Serializable {
         if (condition) {
             return ResponseResult.succeed();
         } else {
-            return ResponseResult.failed();
+            return ResponseResult.error();
         }
     }
 
@@ -116,8 +142,7 @@ public class ResponseResult<T> implements Serializable {
             Object data = execute.execute();
             return ResponseResult.succeed(data);
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseResult.failed("服务器故障... 请稍后再试");
+            return ResponseResult.error(ErrorEnum.SYSTEM_ERROR, "bug待解决");
         }
     }
 
@@ -132,7 +157,7 @@ public class ResponseResult<T> implements Serializable {
          *
          * @return 返回的数据
          */
-        Object execute();
+        Object execute() throws Exception;
     }
 
 }
