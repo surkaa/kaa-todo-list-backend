@@ -63,7 +63,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 是否为空
         if (StrUtil.hasBlank(account, password, checkPassword)) {
             log.debug("注册信息存在空值");
-            return -1L;
+            return -1L; // TODO 换成抛出异常
         }
 
         // 账号长度是否不小于6位

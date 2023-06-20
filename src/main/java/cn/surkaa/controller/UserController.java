@@ -39,6 +39,7 @@ public class UserController {
             log.debug("请求体为空");
             return ResponseResult.error(ErrorEnum.REQUEST_ERROR, "账户密码为空");
         }
+        log.debug("注册账号: {}", registerRequest.getAccount());
         return ResponseResult.ofRun(() -> {
             long userId = userService.userRegister(registerRequest);
             log.debug("注册所得用户id={}", userId);
@@ -63,6 +64,7 @@ public class UserController {
             log.debug("请求体为空");
             return ResponseResult.error(ErrorEnum.REQUEST_ERROR, "账户密码为空");
         }
+        log.debug("登录账号: {}", loginRequest.getAccount());
         return ResponseResult.ofRun(() -> {
             User safeUser = userService.doLogin(
                     loginRequest,
@@ -73,13 +75,14 @@ public class UserController {
         });
     }
 
-    @GetMapping("/search/{currentPage}/{pageSize}/{username}")
-    public ResponseResult<?> searchWithUserName(
-            @PathVariable String username,
-            @PathVariable long currentPage,
-            @PathVariable long pageSize
+    @GetMapping("/search")
+    public ResponseResult<?> checkPassword(
+            String username,
+            long currentPage,
+            long pageSize
     ) {
-        log.debug("收到根据昵称搜索请求");
+        log.debug("收到根据昵称({})搜索请求 currentPage={}, pageSize={}",
+                username, currentPage, pageSize);
         return ResponseResult.ofRun(
                 () -> userService.searchWithUserName(username, currentPage, pageSize)
         );
