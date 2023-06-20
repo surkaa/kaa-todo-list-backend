@@ -105,6 +105,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.debug("注册账号已经被使用");
             throw new AuthenticationException(ErrorEnum.REGISTER_ACCOUNT_REPEAT_ERROR);
         }
+        log.debug("账户未使用可以注册");
 
         // 将密码加密保存
         log.debug("开始获取加密后的密码");
@@ -183,7 +184,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String encryptPassword = getEncryptPassword(password);
         log.debug(encryptPassword);
         // 条件查询匹配账号的用户
-        log.debug("开始查询匹配账户的用户");
+        log.debug("开始查询并匹配账户的用户");
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         User user = this.baseMapper.selectOne(lqw);
@@ -191,10 +192,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.debug("没有找到账户匹配的信息");
             throw new AuthenticationException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
         }
+        log.debug("查找成功");
         if (!user.getUserPassword().equals(encryptPassword)) {
             log.debug("密码不正确");
             throw new AuthenticationException(ErrorEnum.LOGIN_PASSWORD_ERROR);
         }
+        log.debug("匹配成功");
         User safeUser = createSafeUser(user);
 
         log.debug("开始保存登录用户到session");
@@ -221,7 +224,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      */
     @Override
     public IPage<User> searchWithUserName(String username, long currentPage, long pageSize) {
-        log.debug("");
+        log.debug("开始通过昵称匹配用户");
         // 分页对象
         PageDTO<User> page = new PageDTO<>(currentPage, pageSize);
         // 条件查询对象
