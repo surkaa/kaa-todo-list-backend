@@ -69,6 +69,6 @@ public interface UserService extends IService<User> {
      * @param pageSize    页大小
      * @return 分页结果
      */
-    IPage<User> search(String username, long currentPage, long pageSize);
+    IPage<User> searchWithUserName(String username, long currentPage, long pageSize);
 
 }
