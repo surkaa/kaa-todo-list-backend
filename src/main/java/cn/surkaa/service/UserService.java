@@ -1,6 +1,6 @@
 package cn.surkaa.service;
 
-import cn.surkaa.entity.User;
+import cn.surkaa.module.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 import jakarta.servlet.http.HttpServletRequest;
 

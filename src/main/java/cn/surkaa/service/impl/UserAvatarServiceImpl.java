@@ -1,7 +1,7 @@
 package cn.surkaa.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import cn.surkaa.entity.UserAvatar;
+import cn.surkaa.module.UserAvatar;
 import cn.surkaa.service.UserAvatarService;
 import cn.surkaa.mapper.UserAvatarMapper;
 import org.springframework.stereotype.Service;

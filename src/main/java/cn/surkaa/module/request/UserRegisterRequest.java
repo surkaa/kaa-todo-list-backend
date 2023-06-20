@@ -1,4 +1,4 @@
-package cn.surkaa.entity.request;
+package cn.surkaa.module.request;
 
 import lombok.Data;
 

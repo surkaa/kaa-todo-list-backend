@@ -1,6 +1,6 @@
 package cn.surkaa.service;
 
-import cn.surkaa.entity.UserAvatar;
+import cn.surkaa.module.UserAvatar;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**

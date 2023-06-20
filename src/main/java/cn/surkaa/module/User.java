@@ -1,4 +1,4 @@
-package cn.surkaa.entity;
+package cn.surkaa.module;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;

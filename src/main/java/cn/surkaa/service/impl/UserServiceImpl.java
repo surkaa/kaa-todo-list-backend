@@ -2,7 +2,7 @@ package cn.surkaa.service.impl;
 
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.surkaa.entity.User;
+import cn.surkaa.module.User;
 import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.service.UserService;
 import cn.surkaa.utils.StringsUtils;

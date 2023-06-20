@@ -1,6 +1,6 @@
 package cn.surkaa.mapper;
 
-import cn.surkaa.entity.User;
+import cn.surkaa.module.User;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import org.junit.jupiter.api.Test;
