@@ -33,7 +33,7 @@ public interface UserService extends IService<User> {
      * @param checkPassword 确认密码
      * @return 注册成功后的用户id
      */
-    long userRegister(String account, String password, String checkPassword);
+    Long userRegister(String account, String password, String checkPassword);
 
     /**
      * 用户登录

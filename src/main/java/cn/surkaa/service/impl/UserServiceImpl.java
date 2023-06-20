@@ -46,36 +46,36 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * @return 注册成功后的用户id
      */
     @Override
-    public long userRegister(String account, String password, String checkPassword) {
+    public Long userRegister(String account, String password, String checkPassword) {
 
         // 是否为空
         if (StrUtil.hasBlank(account, password, checkPassword)) {
-            return -1;
+            return -1L;
         }
 
         // 账号长度是否不小于6位
         if (account.length() < 6) {
-            return -1;
+            return -1L;
         }
 
         // 密码是否不小于8位
         if (password.length() < 8) {
-            return -1;
+            return -1L;
         }
 
         // 账户是否以数字开头
         if (CharUtil.isNumber(account.charAt(0))) {
-            return -1;
+            return -1L;
         }
 
         // 密码和校验密码是否相同
         if (!password.equals(checkPassword)) {
-            return -1;
+            return -1L;
         }
 
         // 账户密码是否包含其他字符
         if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
-            return -1;
+            return -1L;
         }
 
         // 账户是否重复
@@ -83,7 +83,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         lqw.eq(User::getUserAccount, account);
         Long count = this.baseMapper.selectCount(lqw);
         if (count > 0) {
-            return -1;
+            return -1L;
         }
 
         // 将密码加密保存
@@ -94,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         boolean flag = this.save(user);
         if (!flag) {
             // 保存失败
-            return -1;
+            return -1L;
         }
         // 成功返回
         return user.getId();
