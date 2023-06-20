@@ -1,6 +1,7 @@
 package cn.surkaa.controller;
 
 import cn.surkaa.module.User;
+import cn.surkaa.module.request.RequestResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
@@ -27,19 +28,20 @@ public class UserController {
      * 注册逻辑 表现层
      *
      * @param registerRequest 注册请求体
-     * @return 注册成功id 否则为null
+     * @return {@link RequestResult}
      */
     @PostMapping("/register")
-    public Long register(@RequestBody UserRegisterRequest registerRequest) {
+    public RequestResult register(@RequestBody UserRegisterRequest registerRequest) {
         if (registerRequest == null) {
             // 请求体为空
-            return null;
+            return RequestResult.failed();
         }
-        return userService.userRegister(
+        long userId = userService.userRegister(
                 registerRequest.getAccount(),
                 registerRequest.getPassword(),
                 registerRequest.getCheckPassword()
         );
+        return RequestResult.succeed(userId);
     }
 
     /**
@@ -47,21 +49,22 @@ public class UserController {
      *
      * @param loginRequest 登录请求体
      * @param request      请求
-     * @return 登录成功获取到的User
+     * @return {@link RequestResult}
      */
     @PostMapping("/login")
-    public User login(
+    public RequestResult login(
             @RequestBody UserLoginRequest loginRequest,
             HttpServletRequest request
     ) {
         if (loginRequest == null) {
             // 请求体为空
-            return null;
+            return RequestResult.failed();
         }
-        return userService.doLogin(
+        User safeUser = userService.doLogin(
                 loginRequest.getAccount(),
                 loginRequest.getPassword(),
                 request
         );
+        return RequestResult.succeed(safeUser);
     }
 }
