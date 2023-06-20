@@ -7,23 +7,23 @@ import cn.surkaa.exception.error.ErrorEnum;
  *
  * @author SurKaa
  */
-public class LoginException extends RuntimeException {
+public class AuthenticationException extends RuntimeException {
 
     private final int code;
 
     private final String description;
 
-    public LoginException(int code, String message, String description) {
+    public AuthenticationException(int code, String message, String description) {
         super(message);
         this.code = code;
         this.description = description;
     }
 
-    public LoginException(ErrorEnum errorEnum, String description) {
+    public AuthenticationException(ErrorEnum errorEnum, String description) {
         this(errorEnum.getCode(), errorEnum.getMessage(), description);
     }
 
-    public LoginException(ErrorEnum errorEnum) {
+    public AuthenticationException(ErrorEnum errorEnum) {
         this(errorEnum.getCode(), errorEnum.getMessage(), "");
     }
 

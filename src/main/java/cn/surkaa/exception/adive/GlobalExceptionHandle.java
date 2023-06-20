@@ -1,6 +1,6 @@
 package cn.surkaa.exception.adive;
 
-import cn.surkaa.exception.LoginException;
+import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.request.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandle {
 
-    @ExceptionHandler(LoginException.class)
-    public ResponseResult<?> loginException(LoginException e) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseResult<?> loginException(AuthenticationException e) {
         log.error("登录错误: ", e);
         return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());
     }

@@ -2,7 +2,7 @@ package cn.surkaa.service.impl;
 
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.surkaa.exception.LoginException;
+import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.UserMapper;
 import cn.surkaa.module.User;
@@ -63,58 +63,62 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 是否为空
         if (StrUtil.hasBlank(account, password, checkPassword)) {
             log.debug("注册信息存在空值");
-            return -1L; // TODO 换成抛出异常
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册信息存在空值");
         }
 
         // 账号长度是否不小于6位
         if (account.length() < 6) {
             log.debug("注册账号长度小于6位");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册账号长度小于6位");
         }
 
         // 密码是否不小于8位
         if (password.length() < 8) {
             log.debug("注册密码长度小于8位");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册密码长度小于8位");
         }
 
         // 账户是否以数字开头
         if (CharUtil.isNumber(account.charAt(0))) {
             log.debug("账户不能以数字开头");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
         }
 
         // 密码和校验密码是否相同
         if (!password.equals(checkPassword)) {
             log.debug("密码和校验密码不匹配");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "密码和校验密码不匹配");
         }
 
         // 账户密码是否包含其他字符
         if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
             log.debug("账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
         }
 
         // 账户是否重复
+        log.debug("开始检测账户是否已存在");
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         Long count = this.baseMapper.selectCount(lqw);
         if (count > 0) {
             log.debug("注册账号已经被使用");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.REGISTER_ACCOUNT_REPEAT_ERROR);
         }
 
         // 将密码加密保存
+        log.debug("开始获取加密后的密码");
         String encryptPassword = getEncryptPassword(password);
+        log.debug(encryptPassword);
         User user = new User();
         user.setUserAccount(account);
         user.setUserPassword(encryptPassword);
+        log.debug("开始向数据库插入数据");
         boolean flag = this.save(user);
         if (!flag) {
             // 注册失败
             log.debug("注册失败");
-            return -1L;
+            throw new AuthenticationException(ErrorEnum.REGISTER_ERROR);
         }
         // 成功返回
         log.debug("注册成功");
@@ -147,46 +151,49 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 是否为空
         if (StrUtil.hasBlank(account, password)) {
             log.debug("账号或者密码为空");
-            throw new LoginException(ErrorEnum.PARAM_ERROR, "账号或者密码为空");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账号或者密码为空");
         }
 
         // 账号长度是否不小于6位
         if (account.length() < 6) {
             log.debug("登录账户长度小于6位");
-            throw new LoginException(ErrorEnum.PARAM_ERROR, "登录账户长度小于6位");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "登录账户长度小于6位");
         }
 
         // 密码是否不小于8位
         if (password.length() < 8) {
             log.debug("登录密码小于8位");
-            throw new LoginException(ErrorEnum.PARAM_ERROR, "登录密码小于8位");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "登录密码小于8位");
         }
 
         // 账户是否以数字开头
         if (CharUtil.isNumber(account.charAt(0))) {
             log.debug("账户不能以数字开头");
-            throw new LoginException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
         }
 
         // 账户密码是否包含其他字符
         if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
             log.debug("账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-            throw new LoginException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
         }
 
         // 获取加密后的密码
+        log.debug("开始获取加密后的密码");
         String encryptPassword = getEncryptPassword(password);
+        log.debug(encryptPassword);
         // 条件查询匹配账号的用户
+        log.debug("开始查询匹配账户的用户");
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         User user = this.baseMapper.selectOne(lqw);
         if (user == null) {
             log.debug("没有找到账户匹配的信息");
-            throw new LoginException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
+            throw new AuthenticationException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
         }
         if (!user.getUserPassword().equals(encryptPassword)) {
             log.debug("密码不正确");
-            throw new LoginException(ErrorEnum.LOGIN_PASSWORD_ERROR);
+            throw new AuthenticationException(ErrorEnum.LOGIN_PASSWORD_ERROR);
         }
         User safeUser = createSafeUser(user);
 
@@ -195,7 +202,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         if (request == null) {
             // 无法将登录状态保存
             log.debug("保存失败");
-            throw new LoginException(ErrorEnum.SYSTEM_ERROR);
+            throw new AuthenticationException(ErrorEnum.SYSTEM_ERROR);
         }
         request.getSession().setAttribute(LOGIN_STATE, safeUser);
 
