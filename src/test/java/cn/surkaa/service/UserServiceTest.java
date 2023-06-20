@@ -1,5 +1,7 @@
 package cn.surkaa.service;
 
+import cn.surkaa.entity.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +40,15 @@ public class UserServiceTest {
         assert res == -1;
         res = service.userRegister("b23456", "12345678", "12345678");
         assert res != -1;
+    }
+
+    @Test
+    public void doLoginTest() {
+        String account = "a23456";
+        String password = "12345678";
+        User user = service.doLogin(account, password, null);
+        System.out.println("user = " + user);
+        Assertions.assertEquals(user.getUserAccount(), account);
     }
 
 }
