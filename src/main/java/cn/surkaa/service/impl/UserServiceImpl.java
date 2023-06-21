@@ -225,6 +225,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public IPage<User> searchWithUserName(String username, long currentPage, long pageSize) {
         log.debug("开始通过昵称匹配用户");
+        // TODO username为空时可能出现bug
         // 分页对象
         PageDTO<User> page = new PageDTO<>(currentPage, pageSize);
         // 条件查询对象
@@ -235,7 +236,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
                 User::getUsername,
                 username
         );
-        return this.page(page, lqw);
+        PageDTO<User> res = this.page(page, lqw);
+        long max = res.getPages();
+        if (max < currentPage) {
+            log.debug("查询的页号大于最大页号");
+            log.debug("正在查询最后一页: currentPage={}", max);
+            page.setCurrent(max);
+            res = this.page(page, lqw);
+        }
+        log.debug("查询成功");
+        return res;
     }
 
     /**
