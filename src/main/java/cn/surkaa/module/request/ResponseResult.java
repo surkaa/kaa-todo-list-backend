@@ -3,6 +3,7 @@ package cn.surkaa.module.request;
 import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.error.ErrorEnum;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @author SurKaa
  */
 @Data
+@Slf4j
 @SuppressWarnings("unused")
 public class ResponseResult<T> implements Serializable {
 
@@ -141,6 +143,11 @@ public class ResponseResult<T> implements Serializable {
     public static ResponseResult<?> ofRun(ResultExecute execute) {
         try {
             Object data = execute.execute();
+            // 谨防返回的直接是ResponseResult
+            if (data instanceof ResponseResult<?>) {
+                log.warn("ofRun: 方法应当直接返回成功数据而不是ResponseResult");
+                return (ResponseResult<?>) data;
+            }
             return ResponseResult.succeed(data);
         } catch (AuthenticationException e) {
             return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());

@@ -83,6 +83,7 @@ public class UserController {
     ) {
         log.debug("收到根据昵称({})搜索请求 currentPage={}, pageSize={}",
                 username, currentPage, pageSize);
+        // TODO 普通用户不能频繁搜索
         return ResponseResult.ofRun(
                 () -> userService.searchWithUserName(username, currentPage, pageSize)
         );
