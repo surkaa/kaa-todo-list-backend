@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>登录用户</title>
+</head>
+<body>
+<div class="app">
+  <div class="main">
+    <div class="header">
+      <h2>登录</h2>
+    </div>
+    <div class="auth">
+      <div class="user-input">
+        <label for="username">用户账户:</label>
+        <input id="username" class="input" type="text" v-model="authData.account">
+      </div>
+      <div class="user-input">
+        <label for="password">用户密码:</label>
+        <input id="password" class="input" type="password" v-model="authData.password">
+      </div>
+      <div>
+        <button v-on:click="login">登陆</button>
+        <button v-on:click="toRegister">没有账户? 点我去登录</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    var vm = new Vue({
+        el: '.app',
+        data: {
+            authData: {
+                account: "",
+                password: ""
+            }
+        },
+        methods: {
+            login() {
+                console.log("log")
+                console.log("开始登陆 account: " + this.authData.account + " password: " + this.authData.password)
+                axios.post("/users/login", this.authData).then((res) => {
+                    console.log(res)
+                    if (res.data.code === 0) {
+                        alert("登录成功")
+                        window.location.href = "/page/users.html"
+                    } else {
+                        alert("登陆失败: " + res.data.description + "(" + res.data.message + ")")
+                    }
+                })
+            },
+            toRegister() {
+                window.location.href = "register.html"
+            }
+        }
+    })
+</script>
+</body>
+</html>

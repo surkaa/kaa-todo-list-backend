@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>注册用户</title>
+</head>
+<body>
+<div class="app">
+  <div class="main">
+    <div class="header">
+      <h2>注册</h2>
+    </div>
+    <div class="auth">
+      <div class="user-input">
+        <label for="username">注册账户:</label>
+        <input id="username" class="input" type="text" v-model="authData.account">
+      </div>
+      <div class="user-input">
+        <label for="password">注册密码:</label>
+        <input id="password" class="input" type="password" v-model="authData.password">
+      </div>
+      <div class="user-input">
+        <label for="checkPassword">确认密码:</label>
+        <input id="checkPassword" class="input" type="password" v-model="authData.checkPassword">
+      </div>
+      <div class="form-submit">
+        <button v-on:click="userRegister">注册</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
+<script>
+    var vm = new Vue({
+        el: '.app',
+        data: {
+            authData: {
+                account: "",
+                password: "",
+                checkPassword: ""
+            }
+        },
+        methods: {
+            userRegister() {
+                console.log("register")
+                console.log("开始注册 account: " + this.authData.account + " password: " + this.authData.password + " checkPassword: " + this.authData.checkPassword)
+                axios.post("/users/register", this.authData).then((res) => {
+                    console.log(res)
+                    if (res.data.code === 0) {
+                        alert("注册成功")
+                        window.location.href = "/page/users.html"
+                    } else {
+                        alert("注册失败: " + res.data.description + "(" + res.data.message + ")")
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>
