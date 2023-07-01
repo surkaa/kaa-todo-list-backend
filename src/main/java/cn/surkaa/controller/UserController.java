@@ -1,11 +1,11 @@
 package cn.surkaa.controller;
 
-import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.User;
 import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -35,15 +35,13 @@ public class UserController {
      * @return {@link ResponseResult}
      */
     @PostMapping("/register")
-    public ResponseResult<?> register(
+    public ResponseResult<Long> register(
             @RequestBody UserRegisterRequest registerRequest
     ) {
         log.debug("收到注册请求");
-        return ResponseResult.ofRun(() -> {
-            long userId = userService.userRegister(registerRequest);
-            log.debug("注册所得用户id={}", userId);
-            return userId;
-        });
+        Long userId = userService.userRegister(registerRequest);
+        log.debug("注册所得用户id={}", userId);
+        return ResponseResult.succeed(userId);
     }
 
     /**
@@ -54,23 +52,21 @@ public class UserController {
      * @return {@link ResponseResult}
      */
     @PostMapping("/login")
-    public ResponseResult<?> login(
+    public ResponseResult<User> login(
             @RequestBody UserLoginRequest loginRequest,
             HttpServletRequest request
     ) {
         log.debug("收到登录请求");
-        return ResponseResult.ofRun(() -> {
-            User safeUser = userService.doLogin(
-                    loginRequest,
-                    request
-            );
-            log.debug("登陆成功: safeUser={}", safeUser);
-            return safeUser;
-        });
+        User safeUser = userService.doLogin(
+                loginRequest,
+                request
+        );
+        log.debug("登陆成功: safeUser={}", safeUser);
+        return ResponseResult.succeed(safeUser);
     }
 
     @GetMapping("/search")
-    public ResponseResult<?> searchUserWithUsername(
+    public ResponseResult<IPage<User>> searchUserWithUsername(
             String username,
             long currentPage,
             long pageSize
@@ -78,22 +74,25 @@ public class UserController {
         log.debug("收到根据昵称({})搜索请求 currentPage={}, pageSize={}",
                 username, currentPage, pageSize);
         // TODO 普通用户不能频繁搜索
-        return ResponseResult.ofRun(
-                () -> userService.searchWithUserName(username, currentPage, pageSize)
+        return ResponseResult.succeed(
+                userService.searchWithUserName(username, currentPage, pageSize)
         );
     }
 
+    /**
+     * 获取当前登录账号的账号信息
+     *
+     * @param request 请求
+     * @return ResponseResult User 用户信息
+     */
     @GetMapping
-    public ResponseResult<?> getSelf(
+    public ResponseResult<User> getSelf(
             HttpServletRequest request
     ) {
-        try {
-            Object o = request.getSession().getAttribute(LOGIN_STATE);
-            Objects.requireNonNull(o);
-            User user = (User) o;
-            return ResponseResult.succeed(user);
-        } catch (Exception e) {
-            return ResponseResult.error(ErrorEnum.NOT_FOUND_USER_INFO);
-        }
+        // 从session中获取档期那登录的账号
+        Object o = request.getSession().getAttribute(LOGIN_STATE);
+        Objects.requireNonNull(o);
+        User user = (User) o;
+        return ResponseResult.succeed(user);
     }
 }

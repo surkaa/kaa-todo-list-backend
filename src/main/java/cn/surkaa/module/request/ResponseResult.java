@@ -1,6 +1,5 @@
 package cn.surkaa.module.request;
 
-import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.error.ErrorEnum;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -75,13 +74,13 @@ public class ResponseResult<T> implements Serializable {
         return new ResponseResult<>(code, null, message, description);
     }
 
-    public static ResponseResult<?> error(ErrorEnum error) {
+    public static ResponseResult<Object> error(ErrorEnum error) {
         return new ResponseResult<>(
                 error.getCode(), null, error.getMessage(), ""
         );
     }
 
-    public static ResponseResult<?> error(ErrorEnum error, String description) {
+    public static ResponseResult<Object> error(ErrorEnum error, String description) {
         return new ResponseResult<>(
                 error.getCode(), null, error.getMessage(), description
         );
@@ -132,42 +131,6 @@ public class ResponseResult<T> implements Serializable {
         } else {
             return ResponseResult.error();
         }
-    }
-
-    /**
-     * 根据某段代码(函数式接口的实现)运行是否报错生成Result
-     *
-     * @param execute 代码(函数式接口) {@link ResultExecute ResultExecute}
-     * @return {@link ResponseResult ResponseResult}
-     */
-    public static ResponseResult<?> ofRun(ResultExecute execute) {
-        try {
-            Object data = execute.execute();
-            // 谨防返回的直接是ResponseResult
-            if (data instanceof ResponseResult<?>) {
-                log.warn("ofRun: 方法应当直接返回成功数据而不是ResponseResult");
-                return (ResponseResult<?>) data;
-            }
-            return ResponseResult.succeed(data);
-        } catch (AuthenticationException e) {
-            return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());
-        } catch (Exception e) {
-            return ResponseResult.error(ErrorEnum.SYSTEM_ERROR, "from ofRun: bug待解决...");
-        }
-    }
-
-    /**
-     * 用于ofRun方法传入的函数段参数
-     *
-     * @author SurKaa
-     */
-    public interface ResultExecute {
-        /**
-         * 运行的代码
-         *
-         * @return 返回的数据
-         */
-        Object execute() throws Exception;
     }
 
 }
