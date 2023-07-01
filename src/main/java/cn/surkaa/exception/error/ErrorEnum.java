@@ -9,6 +9,7 @@ public enum ErrorEnum {
 
     SUCCESS(0, "success"),
     PARAM_ERROR(5000, "参数问题"),
+    NOT_FOUND_USER_INFO(5100, "无法获取登录信息"),
     REQUEST_ERROR(6000, "空请求"),
     REGISTER_ACCOUNT_REPEAT_ERROR(6100, "注册账号已经被使用"),
     REGISTER_ERROR(6101, "注册失败"),
