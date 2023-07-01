@@ -32,18 +32,24 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
             Objects.requireNonNull(user);
         } catch (Exception e) {
             log.debug("未登录请求");
+            String uri = request.getRequestURI();
             // 未登录 但是正打算登录的直接放行
-            if ("/users/login".equals(request.getRequestURI())) {
+            if ("/login.html".equals(uri) || "/users/login".equals(uri)) {
                 log.debug("因此请求正是登录请求 放行");
                 return true;
             }
             // 未登录 但是正打算注册的直接放行
-            if ("/users/register".equals(request.getRequestURI())) {
+            if ("/register.html".equals(uri) || "/users/register".equals(uri)) {
                 log.debug("因此请求正是注册请求 放行");
                 return true;
             }
-            String direct = request.getContextPath() + "/users/login";
-            log.info("将即将跳转到登陆页面: {}", direct);
+//            if (uri.endsWith(".js") || uri.endsWith(".css")) {
+            if (uri.contains(".") && !uri.endsWith(".html")) {
+                log.debug("请求的是前端资源 放行");
+                return true;
+            }
+            String direct = request.getContextPath() + "/login.html";
+            log.debug("将即将跳转到登陆页面: {}", direct);
             response.sendRedirect(direct);
             return false;
         }

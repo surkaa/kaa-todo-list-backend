@@ -1,5 +1,6 @@
 package cn.surkaa.configurtaion;
 
+import cn.surkaa.interceptor.CheckLoginInterceptor;
 import cn.surkaa.interceptor.UserAgentInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
@@ -28,6 +29,6 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new UserAgentInterceptor());
         // 添加检查请求是否登录的拦截器
         // TODO 应该定向到登录注册的前端页面 等前端完工在添加
-//        registry.addInterceptor(new CheckLoginInterceptor());
+        registry.addInterceptor(new CheckLoginInterceptor());
     }
 }
