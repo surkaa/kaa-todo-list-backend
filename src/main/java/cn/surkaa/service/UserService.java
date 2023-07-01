@@ -61,4 +61,6 @@ public interface UserService extends IService<User> {
      */
     IPage<User> searchWithUserName(String username, long currentPage, long pageSize);
 
+    User createSafeUser(User user);
+
 }

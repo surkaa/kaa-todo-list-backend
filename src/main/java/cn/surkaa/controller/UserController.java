@@ -70,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/search")
-    public ResponseResult<?> checkPassword(
+    public ResponseResult<?> searchUserWithUsername(
             String username,
             long currentPage,
             long pageSize

@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 import static cn.surkaa.contant.UserContant.LOGIN_STATE;
 
@@ -246,6 +247,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         // 条件查询对象
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         // 配置昵称相似条件
+        // TODO 下面的去掉注释
+//        if (username.isBlank()) {
+//            log.debug("不能以空的用户名进行搜索");
+//            return page;
+//        }
         lqw.like(
                 StrUtil.isNotBlank(username),
                 User::getUsername,
@@ -259,6 +265,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             page.setCurrent(max);
             res = this.page(page, lqw);
         }
+        // 脱敏用户数据
+        res.setRecords(
+                res.getRecords().stream().map(this::createSafeUser).collect(Collectors.toList())
+        );
         log.debug("查询成功");
         return res;
     }
@@ -270,7 +280,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         );
     }
 
-    public static User createSafeUser(User user) {
+    @Override
+    public User createSafeUser(User user) {
         log.debug("开始对用户信息脱敏");
         User safeUser = new User();
         safeUser.setId(user.getId());
