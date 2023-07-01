@@ -1,6 +1,5 @@
 package cn.surkaa.controller;
 
-import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.User;
 import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.module.request.UserLoginRequest;
@@ -35,11 +34,6 @@ public class UserController {
             @RequestBody UserRegisterRequest registerRequest
     ) {
         log.debug("收到注册请求");
-        if (registerRequest == null) {
-            log.debug("请求体为空");
-            return ResponseResult.error(ErrorEnum.REQUEST_ERROR, "账户密码为空");
-        }
-        log.debug("注册账号: {}", registerRequest.getAccount());
         return ResponseResult.ofRun(() -> {
             long userId = userService.userRegister(registerRequest);
             log.debug("注册所得用户id={}", userId);
@@ -60,11 +54,6 @@ public class UserController {
             HttpServletRequest request
     ) {
         log.debug("收到登录请求");
-        if (loginRequest == null) {
-            log.debug("请求体为空");
-            return ResponseResult.error(ErrorEnum.REQUEST_ERROR, "账户密码为空");
-        }
-        log.debug("登录账号: {}", loginRequest.getAccount());
         return ResponseResult.ofRun(() -> {
             User safeUser = userService.doLogin(
                     loginRequest,

@@ -56,9 +56,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     @Override
     public Long userRegister(UserRegisterRequest registerRequest) {
         log.debug("开始注册");
+
+        if (registerRequest == null) {
+            log.debug("请求体为空");
+            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账户密码为空");
+        }
+
         String account = registerRequest.getAccount();
         String password = registerRequest.getPassword();
         String checkPassword = registerRequest.getCheckPassword();
+
+        log.debug("注册账号: {}", account);
 
         // 是否为空
         if (StrUtil.hasBlank(account, password, checkPassword)) {
@@ -146,8 +154,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User doLogin(UserLoginRequest loginRequest, HttpServletRequest request) {
         log.debug("开始登录");
 
+        if (loginRequest == null) {
+            log.debug("请求体为空");
+            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账户密码为空");
+        }
+
         String account = loginRequest.getAccount();
         String password = loginRequest.getPassword();
+
+        log.debug("登录账号: {}", account);
 
         // 是否为空
         if (StrUtil.hasBlank(account, password)) {
