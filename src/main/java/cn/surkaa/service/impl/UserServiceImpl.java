@@ -86,8 +86,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         // 密码和校验密码是否相同
         if (!password.equals(checkPassword)) {
-            log.debug("密码和校验密码不匹配");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "密码和校验密码不匹配");
+            log.debug("密码和确认密码不匹配");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "密码和确认密码不匹配");
         }
 
         // 账户密码是否包含其他字符
