@@ -248,34 +248,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return res;
     }
 
-    /**
-     * 用户注册
-     *
-     * @param account       注册账户
-     * @param password      注册密码
-     * @param checkPassword 确认密码
-     * @return 成功注册的用户id
-     */
-    @Override
-    public Long userRegister(String account, String password, String checkPassword) {
-        log.debug("开始注册");
-        return userRegister(new UserRegisterRequest(account, password, checkPassword));
-    }
-
-    /**
-     * 登录
-     *
-     * @param account  账号
-     * @param password 密码
-     * @param request  请求体
-     * @return 请求所得用户
-     */
-    @Override
-    public User doLogin(String account, String password, HttpServletRequest request) {
-        log.debug("开始登录");
-        return doLogin(new UserLoginRequest(account, password), request);
-    }
-
     private String getEncryptPassword(String originPassword) {
         log.debug("开始获取加密密码");
         return DigestUtils.md5DigestAsHex(

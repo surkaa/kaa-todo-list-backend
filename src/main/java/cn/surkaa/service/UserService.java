@@ -34,11 +34,6 @@ public interface UserService extends IService<User> {
     Long userRegister(UserRegisterRequest registerRequest);
 
     /**
-     * 用户注册 {@link #userRegister(UserRegisterRequest)}的拆箱
-     */
-    Long userRegister(String account, String password, String checkPassword);
-
-    /**
      * 用户登录
      * <h2>登录逻辑 登录条件</h2>
      *
@@ -55,11 +50,6 @@ public interface UserService extends IService<User> {
      * @return 脱敏后的用户信息
      */
     User doLogin(UserLoginRequest loginRequest, HttpServletRequest request);
-
-    /**
-     * 用户登录 {@link #doLogin(UserLoginRequest, HttpServletRequest)}的拆箱
-     */
-    User doLogin(String account, String password, HttpServletRequest request);
 
     /**
      * 根据用户昵称搜索用户并分页
