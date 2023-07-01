@@ -89,10 +89,6 @@ public class UserController {
     public ResponseResult<User> getSelf(
             HttpServletRequest request
     ) {
-        // 从session中获取档期那登录的账号
-        Object o = request.getSession().getAttribute(LOGIN_STATE);
-        Objects.requireNonNull(o);
-        User user = (User) o;
-        return ResponseResult.succeed(user);
+        return ResponseResult.succeed(userService.getUser(request));
     }
 }
