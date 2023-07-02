@@ -75,35 +75,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册信息存在空值");
         }
 
-        // 账号长度是否不小于6位
-        if (account.length() < 6) {
-            log.debug("注册账号长度小于6位");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册账号长度小于6位");
-        }
-
-        // 密码是否不小于8位
-        if (password.length() < 8) {
-            log.debug("注册密码长度小于8位");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "注册密码长度小于8位");
-        }
-
-        // 账户是否以数字开头
-        if (CharUtil.isNumber(account.charAt(0))) {
-            log.debug("账户不能以数字开头");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
-        }
-
         // 密码和校验密码是否相同
         if (!password.equals(checkPassword)) {
             log.debug("密码和确认密码不匹配");
             throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "密码和确认密码不匹配");
         }
 
-        // 账户密码是否包含其他字符
-        if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
-            log.debug("账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-        }
+        // 检查账号密码的合法性
+        checkAccount(account);
+        checkPassword(password);
 
         // 账号是否重复
         log.debug("开始检测账号是否已存在");
@@ -171,29 +151,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账号或者密码为空");
         }
 
-        // 账号长度是否不小于6位
-        if (account.length() < 6) {
-            log.debug("登录账户长度小于6位");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "登录账户长度小于6位");
-        }
-
-        // 密码是否不小于8位
-        if (password.length() < 8) {
-            log.debug("登录密码小于8位");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "登录密码小于8位");
-        }
-
-        // 账户是否以数字开头
-        if (CharUtil.isNumber(account.charAt(0))) {
-            log.debug("账户不能以数字开头");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户不能以数字开头");
-        }
-
-        // 账户密码是否包含其他字符
-        if (StringsUtils.isNotBelongLatterAndNumber(account, password)) {
-            log.debug("账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
-        }
+        // 检查账号密码的合法性
+        checkAccount(account);
+        checkPassword(password);
 
         // 获取加密后的密码
         log.debug("开始获取加密后的密码");
@@ -300,4 +260,51 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return safeUser;
     }
 
+    /**
+     * 用于检查账号是否合法
+     *
+     * @param account 账号
+     * @throws AuthenticationException 当账号不合法时
+     */
+    private void checkAccount(String account) {
+        // 账号长度是否不小于6位
+        if (account.length() < 6) {
+            log.debug("账号长度小于6位");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账号长度小于6位");
+        }
+
+        // 账号是否以数字开头
+        if (CharUtil.isNumber(account.charAt(0))) {
+            log.debug("账号不能以数字开头");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账号不能以数字开头");
+        }
+
+        // 账号是否包含其他字符
+        if (StringsUtils.isNotBelongLatterAndNumber(account)) {
+            log.debug("账号中含有其他字符(只能包含大小写字母以及数字)");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR,
+                    "账号中含有其他字符(只能包含大小写字母以及数字)");
+        }
+    }
+
+    /**
+     * 用于检查密码是否合法
+     *
+     * @param password 密码
+     * @throws AuthenticationException 当密码不合法时
+     */
+    private void checkPassword(String password) {
+        // 密码是否不小于8位
+        if (password.length() < 8) {
+            log.debug("密码长度小于8位");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "密码长度小于8位");
+        }
+
+        // 密码是否包含其他字符
+        if (StringsUtils.isNotBelongLatterAndNumber(password)) {
+            log.debug("密码中含有其他字符(只能包含大小写字母以及数字)");
+            throw new AuthenticationException(ErrorEnum.PARAM_ERROR,
+                    "密码中含有其他字符(只能包含大小写字母以及数字)");
+        }
+    }
 }
