@@ -1,6 +1,7 @@
 package cn.surkaa.exception.adive;
 
 import cn.surkaa.exception.AuthenticationException;
+import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.request.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +19,12 @@ public class GlobalExceptionHandle {
     public ResponseResult<?> loginException(AuthenticationException e) {
         log.error("登录错误: ", e);
         return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());
+    }
+
+    @ExceptionHandler(UserCenterException.class)
+    public ResponseResult<?> userCenterException(Exception e) {
+        log.error("UserCenterException: ", e);
+        return ResponseResult.error(ErrorEnum.SYSTEM_ERROR);
     }
 
     @ExceptionHandler(Exception.class)
