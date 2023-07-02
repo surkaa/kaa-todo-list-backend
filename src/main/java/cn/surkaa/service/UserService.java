@@ -2,6 +2,7 @@ package cn.surkaa.service;
 
 import cn.hutool.core.util.CharUtil;
 import cn.surkaa.exception.AuthenticationException;
+import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.User;
 import cn.surkaa.module.request.UserLoginRequest;
@@ -86,10 +87,15 @@ public interface UserService extends IService<User> {
      * @return 登录用户
      */
     default User getUser(HttpServletRequest request) {
-        // 从session中获取档期那登录的账号
-        Object o = request.getSession().getAttribute(LOGIN_STATE);
-        Objects.requireNonNull(o);
-        return (User) o;
+        try {
+            // 从session中获取档期那登录的账号
+            Object o = request.getSession().getAttribute(LOGIN_STATE);
+            Objects.requireNonNull(o);
+            return (User) o;
+        } catch (Exception e) {
+            throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_INFO,
+                    "您可能尚未未登录");
+        }
     }
 
     /**
