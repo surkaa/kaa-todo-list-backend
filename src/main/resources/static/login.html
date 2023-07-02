@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>登录用户</title>
+  <link rel="stylesheet" href="style/auth.css">
 </head>
 <body>
 <div class="app">
@@ -19,9 +20,11 @@
         <label for="password">用户密码:</label>
         <input id="password" class="input" type="password" v-model="authData.password">
       </div>
-      <div>
+      <div class="submit">
         <button v-on:click="login">登陆</button>
-        <button v-on:click="toRegister">没有账户? 点我去登录</button>
+      </div>
+      <div class="to-register">
+        <p>没有账户? 点我去<a href="register.html">登录</a></p>
       </div>
     </div>
   </div>
@@ -50,9 +53,6 @@
                         alert("登陆失败: " + res.data.description + "(" + res.data.message + ")")
                     }
                 })
-            },
-            toRegister() {
-                window.location.href = "register.html"
             }
         }
     })

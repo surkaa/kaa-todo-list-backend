@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>注册用户</title>
+  <link rel="stylesheet" href="style/auth.css">
 </head>
 <body>
 <div class="app">
@@ -23,7 +24,7 @@
         <label for="checkPassword">确认密码:</label>
         <input id="checkPassword" class="input" type="password" v-model="authData.checkPassword">
       </div>
-      <div class="form-submit">
+      <div class="submit">
         <button v-on:click="userRegister">注册</button>
       </div>
     </div>
