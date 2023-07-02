@@ -7,31 +7,17 @@ import cn.surkaa.exception.error.ErrorEnum;
  *
  * @author SurKaa
  */
-public class AuthenticationException extends RuntimeException {
-
-    private final int code;
-
-    private final String description;
+public class AuthenticationException extends UserCenterException {
 
     public AuthenticationException(int code, String message, String description) {
-        super(message);
-        this.code = code;
-        this.description = description;
+        super(code, message, description);
     }
 
     public AuthenticationException(ErrorEnum errorEnum, String description) {
-        this(errorEnum.getCode(), errorEnum.getMessage(), description);
+        super(errorEnum, description);
     }
 
     public AuthenticationException(ErrorEnum errorEnum) {
-        this(errorEnum.getCode(), errorEnum.getMessage(), "");
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
+        super(errorEnum);
     }
 }
