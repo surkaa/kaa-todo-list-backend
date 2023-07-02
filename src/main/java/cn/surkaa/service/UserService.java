@@ -22,13 +22,13 @@ public interface UserService extends IService<User> {
      * 用户注册
      * <h2>注册逻辑 注册条件</h2>
      * <ul>
-     *     <li>账户密码以及确认密码都不为空(不是null 不是空字符)</li>
-     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>账号密码以及确认密码都不为空(不是null 不是空字符)</li>
+     *     <li>账号长度不小于<strong>6</strong>位</li>
      *     <li>密码不小于<strong>8</strong>位</li>
-     *     <li>账户不能以数字开头</li>
+     *     <li>账号不能以数字开头</li>
      *     <li>密码和校验密码相同</li>
-     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
-     *     <li>账户不重复</li>
+     *     <li>账号和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     *     <li>账号不重复</li>
      *     <li>对密码进行加密保存</li>
      * </ul>
      *
@@ -42,11 +42,11 @@ public interface UserService extends IService<User> {
      * <h2>登录逻辑 登录条件</h2>
      *
      * <ul>
-     *     <li>账户密码都不为空(不是null 不是空字符)</li>
-     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>账号密码都不为空(不是null 不是空字符)</li>
+     *     <li>账号长度不小于<strong>6</strong>位</li>
      *     <li>密码不小于<strong>8</strong>位</li>
-     *     <li>账户不能以数字开头</li>
-     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     *     <li>账号不能以数字开头</li>
+     *     <li>账号和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
      * </ul>
      *
      * @param loginRequest 登录请求体

@@ -41,13 +41,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * 用户注册
      * <h2>注册逻辑 注册条件</h2>
      * <ul>
-     *     <li>账户密码以及确认密码都不为空(不是null 不是空字符)</li>
-     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>账号密码以及确认密码都不为空(不是null 不是空字符)</li>
+     *     <li>账号长度不小于<strong>6</strong>位</li>
      *     <li>密码不小于<strong>8</strong>位</li>
-     *     <li>账户不能以数字开头</li>
+     *     <li>账号不能以数字开头</li>
      *     <li>密码和校验密码相同</li>
-     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
-     *     <li>账户不重复</li>
+     *     <li>账号和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     *     <li>账号不重复</li>
      *     <li>对密码进行加密保存</li>
      * </ul>
      *
@@ -60,7 +60,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         if (registerRequest == null) {
             log.debug("请求体为空");
-            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账户密码为空");
+            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账号密码为空");
         }
 
         String account = registerRequest.getAccount();
@@ -105,8 +105,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             throw new AuthenticationException(ErrorEnum.PARAM_ERROR, "账户或者密码中含有其他字符(只能包含大小写字母以及数字)");
         }
 
-        // 账户是否重复
-        log.debug("开始检测账户是否已存在");
+        // 账号是否重复
+        log.debug("开始检测账号是否已存在");
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         Long count = this.baseMapper.selectCount(lqw);
@@ -114,7 +114,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
             log.debug("注册账号已经被使用");
             throw new AuthenticationException(ErrorEnum.REGISTER_ACCOUNT_REPEAT_ERROR);
         }
-        log.debug("账户未使用可以注册");
+        log.debug("账号未使用可以注册");
 
         // 将密码加密保存
         log.debug("开始获取加密后的密码");
@@ -140,11 +140,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * <h2>登录逻辑 登录条件</h2>
      *
      * <ul>
-     *     <li>账户密码都不为空(不是null 不是空字符)</li>
-     *     <li>账户长度不小于<strong>6</strong>位</li>
+     *     <li>账号密码都不为空(不是null 不是空字符)</li>
+     *     <li>账号长度不小于<strong>6</strong>位</li>
      *     <li>密码不小于<strong>8</strong>位</li>
-     *     <li>账户不能以数字开头</li>
-     *     <li>账户和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
+     *     <li>账号不能以数字开头</li>
+     *     <li>账号和密码只能包含如下字符<pre>{@code a-z A-Z 0-9}</pre></li>
      * </ul>
      *
      * @param loginRequest 登录请求体
@@ -157,7 +157,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         if (loginRequest == null) {
             log.debug("请求体为空");
-            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账户密码为空");
+            throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账号密码为空");
         }
 
         String account = loginRequest.getAccount();
@@ -200,12 +200,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         String encryptPassword = getEncryptPassword(password);
         log.debug(encryptPassword);
         // 条件查询匹配账号的用户
-        log.debug("开始查询并匹配账户的用户");
+        log.debug("开始查询并匹配账号的用户");
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         User user = this.baseMapper.selectOne(lqw);
         if (user == null) {
-            log.debug("没有找到账户匹配的信息");
+            log.debug("没有找到账号匹配的信息");
             throw new AuthenticationException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
         }
         log.debug("查找成功");
