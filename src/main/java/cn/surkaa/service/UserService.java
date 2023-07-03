@@ -181,6 +181,7 @@ public interface UserService extends IService<User> {
         safeUser.setUserRole(user.getUserRole());
         // 逻辑删除
         // safeUser.setIsDelete(user.getIsDelete());
+        log.debug("脱敏成功");
         return safeUser;
     }
 
