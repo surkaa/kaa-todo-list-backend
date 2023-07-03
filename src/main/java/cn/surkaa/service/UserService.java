@@ -69,6 +69,21 @@ public interface UserService extends IService<User> {
      */
     User doLogin(UserLoginRequest loginRequest, HttpServletRequest request);
 
+    /**
+     * 根据当前用户的角色(等级)修改信息
+     *
+     * <h2>修改规则:</h2>
+     * <ul>
+     *     <li>普通用户只能修改自己的用户信息</li>
+     *     <li>管理员用户可以修改普通用户和自己的用户信息</li>
+     *     <li>超级管理员可以修改除其他超级管理员之外的用户信息</li>
+     * </ul>
+     *
+     * @param entity  更改后的信息
+     * @param request 请求
+     * @return 更改成功后的信息
+     */
+    User updateUserInfo(User entity, HttpServletRequest request);
 
     /**
      * 根据用户昵称搜索用户并分页

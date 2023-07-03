@@ -10,10 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Objects;
-
-import static cn.surkaa.contant.UserContant.LOGIN_STATE;
-
 /**
  * @author SurKaa
  */
@@ -90,5 +86,16 @@ public class UserController {
             HttpServletRequest request
     ) {
         return ResponseResult.succeed(userService.getUser(request));
+    }
+
+    @PutMapping
+    public ResponseResult<User> updateUser(
+            @RequestBody User user,
+            HttpServletRequest request
+    ) {
+        log.debug("开始更新用户: {}", user);
+        return ResponseResult.succeed(
+                userService.updateUserInfo(user, request)
+        );
     }
 }
