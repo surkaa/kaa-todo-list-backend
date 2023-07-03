@@ -1,5 +1,6 @@
 package cn.surkaa.module.request;
 
+import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -77,6 +78,12 @@ public class ResponseResult<T> implements Serializable {
     public static ResponseResult<Object> error(ErrorEnum error) {
         return new ResponseResult<>(
                 error.getCode(), null, error.getMessage(), ""
+        );
+    }
+
+    public static ResponseResult<Object> error(UserCenterException e) {
+        return new ResponseResult<>(
+                e.getCode(), null, e.getMessage(), e.getDescription()
         );
     }
 

@@ -18,13 +18,13 @@ public class GlobalExceptionHandle {
     @ExceptionHandler(AuthenticationException.class)
     public ResponseResult<?> loginException(AuthenticationException e) {
         log.error("登录错误: ", e);
-        return ResponseResult.error(e.getCode(), e.getMessage(), e.getDescription());
+        return ResponseResult.error(e);
     }
 
     @ExceptionHandler(UserCenterException.class)
-    public ResponseResult<?> userCenterException(Exception e) {
+    public ResponseResult<?> userCenterException(UserCenterException e) {
         log.error("UserCenterException: ", e);
-        return ResponseResult.error(ErrorEnum.SYSTEM_ERROR);
+        return ResponseResult.error(e);
     }
 
     @ExceptionHandler(Exception.class)
