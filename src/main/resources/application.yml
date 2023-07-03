@@ -4,8 +4,8 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://39.101.74.182:3306/user_center
-    username: kaa
+    url: jdbc:mysql://localhost:3306/user_center
+    username: root
     password:
   application:
     name: User-Center
