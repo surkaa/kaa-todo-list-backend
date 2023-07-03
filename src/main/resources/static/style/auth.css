@@ -1,81 +1,55 @@
-* {
-    box-sizing: border-box;
+#app {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
-.app {
-    height: 55vw;
-    display: flex; /* 使用弹性布局 */
-    align-items: center; /* 在垂直方向上居中 */
-    justify-content: center; /* 在水平方向上居中 */
-}
-
-.main {
-    /* 剧中 */
+.container {
+    width: 500px;
     text-align: center;
-
-    /* 使用transform缩放登录框 */
-    transform: scale(2); /* 这里将登录框整体放大1.5倍 */
-    transform-origin: center; /* 设置缩放的中心点为元素的中心 */
 }
 
-.auth div {
-    /* 盒子都保持10px高低 */
-    margin: 10px 0;
+.header {
+    /*margin-top: 80px;*/
+    font-size: 40px;
 }
 
-.user-input label {
-    margin-top: 12px;
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 40;
-    color: #1F2338;
-    font-size: 10px;
-    text-align: left;
+.login-box {
+    margin-top: 80px;
 }
 
-/* 调整输入框的大小和字体大小 */
-.input {
-    width: 100%;
-    font-size: 16px;
-    padding: 5px;
-    margin-top: 8px;
-    border: 1px solid #ccc; /* 添加边框，可以根据需要修改颜色和样式 */
-    border-radius: 4px; /* 圆角边框 */
-    background-color: #f5f5f5; /* 输入框背景颜色 */
-
-    /* 移除默认的焦点边框 */
-    outline: none;
+.login-box * {
+    margin-top: 16px;
 }
 
-/* 输入框获取焦点时的样式 */
-.input:focus {
-    border-color: #007BFF; /* 修改焦点时的边框颜色 */
-    box-shadow: 0 0 5px #007BFF; /* 添加焦点时的阴影效果 */
+.loginInfo {
+    height: 50px;
 }
 
-/* 调整按钮样式 */
+.loginInfo * {
+    line-height: 30px;
+}
+
+.loginInfo label {
+    font-size: 20px;
+}
+
+.loginInfo input {
+    width: 200px;
+    margin-left: 20px;
+    border: 3px solid gainsboro;
+    border-radius: 8px;
+}
+
+.submit {
+    margin-top: 20px;
+}
+
 .submit button {
-    font-size: 16px;
-    width: 100%;
-    margin-top: 10px;
-    padding: 6px 8px;
-    border: none; /* 移除默认边框 */
-    border-radius: 4px; /* 圆角边框 */
-    background-color: #007BFF; /* 按钮背景颜色 */
-    color: #fff; /* 按钮文本颜色 */
-    cursor: pointer; /* 添加手型光标，指示该元素可点击 */
-}
-
-/* 鼠标悬停样式 */
-.submit button:hover {
-    background-color: #0056b3; /* 修改按钮的背景颜色，显示悬停效果 */
-}
-
-/* 鼠标按下样式 */
-.submit button:active {
-    background-color: #003d80; /* 修改按钮的背景颜色，显示按下效果 */
-}
-
-.to-register {
-    font-size: 12px;
+    width: 80%;
+    height: 36px;
+    border: 2px solid #909399;
+    border-radius: 6px;
+    font-size: 18px;
 }

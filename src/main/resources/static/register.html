@@ -1,63 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>注册用户</title>
-  <link rel="stylesheet" href="style/auth.css">
+    <meta charset="UTF-8">
+    <title>注册用户中心</title>
+    <link rel="stylesheet" href="style/auth.css">
 </head>
 <body>
-<div class="app">
-  <div class="main">
-    <div class="header">
-      <h2>注册</h2>
+<div id="app">
+    <div class="container">
+        <h1 class="header">注册用户中心</h1>
+        <div class="login-box">
+            <div class="loginInfo">
+                <label for="account">用户账户: </label>
+                <input type="text" id="account" v-model="registerData.account">
+            </div>
+            <div class="loginInfo">
+                <label for="password">用户密码: </label>
+                <input type="text" id="password" v-model="registerData.password">
+            </div>
+            <div class="loginInfo">
+                <label for="checkPassword">用户密码: </label>
+                <input type="text" id="checkPassword" v-model="registerData.checkPassword">
+            </div>
+            <div class="submit">
+                <button v-on:click="register">注册</button>
+            </div>
+        </div>
     </div>
-    <div class="auth">
-      <div class="user-input">
-        <label for="username">注册账户:</label>
-        <input id="username" class="input" type="text" v-model="authData.account">
-      </div>
-      <div class="user-input">
-        <label for="password">注册密码:</label>
-        <input id="password" class="input" type="password" v-model="authData.password">
-      </div>
-      <div class="user-input">
-        <label for="checkPassword">确认密码:</label>
-        <input id="checkPassword" class="input" type="password" v-model="authData.checkPassword">
-      </div>
-      <div class="submit">
-        <button v-on:click="userRegister">注册</button>
-      </div>
-    </div>
-  </div>
 </div>
+</body>
 <script src="js/vue.js"></script>
 <script src="js/axios-0.18.0.js"></script>
 <script>
-    var vm = new Vue({
-        el: '.app',
+    new Vue({
+        el: "#app",
         data: {
-            authData: {
+            registerData: {
                 account: "",
                 password: "",
                 checkPassword: ""
             }
         },
         methods: {
-            userRegister() {
-                console.log("register")
-                console.log("开始注册 account: " + this.authData.account + " password: " + this.authData.password + " checkPassword: " + this.authData.checkPassword)
-                axios.post("/users/register", this.authData).then((res) => {
-                    console.log(res)
-                    if (res.data.code === 0) {
-                        alert("注册成功")
-                        window.location.href = "/page/users.html"
-                    } else {
-                        alert("注册失败: " + res.data.description + "(" + res.data.message + ")")
-                    }
-                })
+            register() {
+
             }
         }
     })
 </script>
-</body>
 </html>
