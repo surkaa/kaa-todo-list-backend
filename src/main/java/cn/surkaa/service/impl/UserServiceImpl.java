@@ -53,7 +53,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public Long userRegister(UserRegisterRequest registerRequest) {
         log.debug("开始注册");
 
-        if (registerRequest == null) {
+        if (null == registerRequest) {
             log.debug("请求体为空");
             throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账号密码为空");
         }
@@ -130,7 +130,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     public User doLogin(UserLoginRequest loginRequest, HttpServletRequest request) {
         log.debug("开始登录");
 
-        if (loginRequest == null) {
+        if (null == loginRequest) {
             log.debug("请求体为空");
             throw new AuthenticationException(ErrorEnum.REQUEST_ERROR, "账号密码为空");
         }
@@ -159,7 +159,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         LambdaQueryWrapper<User> lqw = new LambdaQueryWrapper<>();
         lqw.eq(User::getUserAccount, account);
         User user = this.baseMapper.selectOne(lqw);
-        if (user == null) {
+        if (null == user) {
             log.debug("没有找到账号匹配的信息");
             throw new AuthenticationException(ErrorEnum.LOGIN_NOTFOUND_USER_ERROR);
         }
@@ -173,7 +173,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
 
         log.debug("开始保存登录用户到session");
         // 将登录状态记录到请求体的session中
-        if (request == null) {
+        if (null == request) {
             // 无法将登录状态保存
             log.debug("保存失败");
             throw new AuthenticationException(ErrorEnum.SYSTEM_ERROR);
