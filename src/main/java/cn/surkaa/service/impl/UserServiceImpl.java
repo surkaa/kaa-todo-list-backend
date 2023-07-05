@@ -162,7 +162,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         User select = getBaseMapper().selectById(update.getId());
         if (null == select) {
             log.debug("找不到要更新的数据");
-            throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_FOR_UPDATE_ERROR);
+            throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_FOR_OPERATION_ERROR);
         }
         // 检查是否可以并获取可更新后的信息
         log.debug("存在! 开始检查是否可以更新");

@@ -18,7 +18,7 @@ public enum ErrorEnum {
     LOGIN_PASSWORD_ERROR(6201, "登录密码错误"),
     NOT_FOUND_USER_ROLE_ERROR(6999, "用户角色非法"),
     OPERATION_DENIED_ERROR(7000, "操作权限不足"),
-    NOT_FOUND_USER_FOR_UPDATE_ERROR(7099, "没有找到要更新的用户数据"),
+    NOT_FOUND_USER_FOR_OPERATION_ERROR(7099, "没有找到用户数据"),
     UPDATE_OPERATION_DENIED_ERROR(7100, "您无法修改他人或者管理员的信息"),
     SYSTEM_ERROR(10000, "服务器故障...");
 
