@@ -214,6 +214,42 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         return res;
     }
 
+    @Override
+    public Boolean removeByIdWithUserRole(Long id, HttpServletRequest request) {
+        User removeUser = getBaseMapper().selectById(id);
+        if (removeUser == null) {
+            throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_FOR_OPERATION_ERROR);
+        }
+        User user = getUser(request);
+        switch (user.getUserRole()) {
+            case DEFAULT_USER -> {
+                log.debug("普通用户{}尝试删除普通用户{}", user.getId(), removeUser.getId());
+                throw new PermissionDeniedException(ErrorEnum.OPERATION_DENIED_ERROR, "您无法删除其他用户");
+            }
+            case ADMIN_USER -> {
+                // 管理员用户只能删除普通用户
+                if (removeUser.getUserRole() == DEFAULT_USER) {
+                    log.debug("管理员用户{}尝试删除普通用户{}", user.getId(), removeUser.getId());
+                    int countOfDelete = getBaseMapper().deleteById(removeUser.getId());
+                    return countOfDelete == 1;
+                }
+                log.debug("管理员用户{}尝试删除管理员用户{}", user.getId(), removeUser.getId());
+                throw new PermissionDeniedException(ErrorEnum.OPERATION_DENIED_ERROR, "您无法删除其他用户");
+            }
+            case ROOT_USER -> {
+                // 超级管理员无法删除其他超级管理员
+                if (removeUser.getUserRole() == ROOT_USER) {
+                    log.debug("超级管理员用户{}尝试删除超级管理员用户{}", user.getId(), removeUser.getId());
+                    throw new PermissionDeniedException(ErrorEnum.NOT_FOUND_USER_ROLE_ERROR, "您无法删除其他用户");
+                }
+                log.debug("超级管理员用户{}尝试删除用户{}", user.getId(), removeUser.getId());
+                int countOfDelete = getBaseMapper().deleteById(removeUser.getId());
+                return countOfDelete == 1;
+            }
+            default -> throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_ROLE_ERROR);
+        }
+    }
+
     /**
      * 检查更新操作是否合法
      *

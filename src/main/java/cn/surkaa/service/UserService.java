@@ -96,6 +96,15 @@ public interface UserService extends IService<User> {
     IPage<User> searchWithUserName(String username, long currentPage, long pageSize);
 
     /**
+     * 通过id并结合当前用户角色删除用户
+     *
+     * @param id      用户id
+     * @param request 请求
+     * @return 是否删除成功
+     */
+    Boolean removeByIdWithUserRole(Long id, HttpServletRequest request);
+
+    /**
      * 获取当前登录的用户信息
      *
      * @param request 请求

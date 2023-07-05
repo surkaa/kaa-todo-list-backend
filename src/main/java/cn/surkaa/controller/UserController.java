@@ -98,4 +98,15 @@ public class UserController {
                 userService.updateUserInfo(user, request)
         );
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseResult<Object> deleteById(
+            @PathVariable Long id,
+            HttpServletRequest request
+    ) {
+        log.debug("收到删除用户: id={}", id);
+        return ResponseResult.condition(
+                userService.removeByIdWithUserRole(id, request)
+        );
+    }
 }
