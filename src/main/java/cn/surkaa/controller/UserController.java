@@ -88,6 +88,7 @@ public class UserController {
         return ResponseResult.succeed(userService.getUser(request));
     }
 
+    // TODO 更新密码时也要添加原密码进行验证 可以写一个用于更新的Body
     @PutMapping
     public ResponseResult<User> updateUser(
             @RequestBody User user,
