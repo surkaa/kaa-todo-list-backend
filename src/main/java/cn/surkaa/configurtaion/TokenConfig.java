@@ -3,13 +3,12 @@ package cn.surkaa.configurtaion;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.module.TokenInfo;
+import cn.surkaa.utils.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.util.DigestUtils;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,9 +33,7 @@ public class TokenConfig {
      */
     public static String putToken(Long id) {
         TokenInfo user = new TokenInfo(id);
-        String token = DigestUtils.md5DigestAsHex(
-                ("0" + id).getBytes(StandardCharsets.UTF_8)
-        );
+        String token = StringsUtils.md5DigestAsHex(id + System.currentTimeMillis());
         log.debug("存放登录用户: token: {}, user: {}, 当前登录用户池数量: {}",
                 token, user, data.size() + 1);
         data.put(token, user);

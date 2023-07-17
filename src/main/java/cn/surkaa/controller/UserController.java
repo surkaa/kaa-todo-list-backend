@@ -6,6 +6,7 @@ import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,13 +75,14 @@ public class UserController {
     /**
      * 获取当前登录账号的账号信息
      *
-     * @param token token
      * @return ResponseResult User 用户信息
      */
     @GetMapping
     public ResponseResult<User> getUserByToken(
-            String token
+            HttpServletRequest request
     ) {
+        String token = request.getHeader("token");
+        log.debug("getUserByToken: {}", token);
         return ResponseResult.succeed(userService.getUserByToken(token));
     }
 
