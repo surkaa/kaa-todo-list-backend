@@ -1,6 +1,7 @@
 package cn.surkaa.service;
 
 import cn.hutool.core.util.CharUtil;
+import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
@@ -10,15 +11,11 @@ import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.utils.StringsUtils;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.DigestUtils;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
-
-import static cn.surkaa.contant.UserContant.LOGIN_STATE;
 
 /**
  * @author SurKaa
@@ -64,10 +61,9 @@ public interface UserService extends IService<User> {
      * </ul>
      *
      * @param loginRequest 登录请求体
-     * @param request      请求
      * @return 脱敏后的用户信息
      */
-    User doLogin(UserLoginRequest loginRequest, HttpServletRequest request);
+    String doLogin(UserLoginRequest loginRequest);
 
     /**
      * 根据当前用户的角色(等级)修改信息
@@ -79,11 +75,11 @@ public interface UserService extends IService<User> {
      *     <li>超级管理员可以修改除其他超级管理员之外的用户信息</li>
      * </ul>
      *
-     * @param entity  更改后的信息
-     * @param request 请求
+     * @param entity 更改后的信息
+     * @param token  token
      * @return 更改成功后的信息
      */
-    User updateUserInfo(User entity, HttpServletRequest request);
+    User updateUserInfo(User entity, String token);
 
     /**
      * 根据用户昵称搜索用户并分页
@@ -98,24 +94,23 @@ public interface UserService extends IService<User> {
     /**
      * 通过id并结合当前用户角色删除用户
      *
-     * @param id      用户id
-     * @param request 请求
+     * @param id    用户id
+     * @param token token
      * @return 是否删除成功
      */
-    Boolean removeByIdWithUserRole(Long id, HttpServletRequest request);
+    Boolean removeByIdWithUserRole(Long id, String token);
 
     /**
      * 获取当前登录的用户信息
      *
-     * @param request 请求
+     * @param token token
      * @return 登录用户
      */
-    default User getUser(HttpServletRequest request) {
+    default User getUserByToken(String token) {
         try {
-            // 从session中获取档期那登录的账号
-            Object o = request.getSession().getAttribute(LOGIN_STATE);
-            Objects.requireNonNull(o);
-            return (User) o;
+            Long id = TokenConfig.getLoginId(token);
+            User user = getBaseMapper().selectById(id);
+            return createSafeUser(user);
         } catch (Exception e) {
             throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_INFO,
                     "您可能尚未未登录");

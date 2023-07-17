@@ -24,7 +24,7 @@ public class TokenConfig {
     private static final Map<String, TokenInfo> data = new ConcurrentHashMap<>();
 
     // 登陆过期的时间: 一小时
-    private static final long OVERDUE_TIME = 60_0000L;
+    private static final long OVERDUE_TIME = 360_0000L;
 
     /**
      * 存放用户登录了的信息
@@ -37,7 +37,8 @@ public class TokenConfig {
         String token = DigestUtils.md5DigestAsHex(
                 ("0" + id).getBytes(StandardCharsets.UTF_8)
         );
-        log.debug("存放登录用户: token: {}, user: {}", token, user);
+        log.debug("存放登录用户: token: {}, user: {}, 当前登录用户池数量: {}",
+                token, user, data.size() + 1);
         data.put(token, user);
         return token;
     }

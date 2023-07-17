@@ -1,6 +1,7 @@
 package cn.surkaa.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.PermissionDeniedException;
 import cn.surkaa.exception.UserCenterException;
@@ -94,7 +95,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public User doLogin(UserLoginRequest loginRequest, HttpServletRequest request) {
+    public String doLogin(UserLoginRequest loginRequest) {
         log.debug("开始登录");
 
         if (null == loginRequest) {
@@ -138,22 +139,16 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         log.debug("匹配成功");
         User safeUser = createSafeUser(user);
 
-        log.debug("开始保存登录用户到session");
-        // 将登录状态记录到请求体的session中
-        if (null == request) {
-            // 无法将登录状态保存
-            log.debug("保存失败");
-            throw new AuthenticationException(ErrorEnum.SYSTEM_ERROR);
-        }
-        request.getSession().setAttribute(LOGIN_STATE, safeUser);
+        log.debug("开始保存登录用户到map");
+        String putToken = TokenConfig.putToken(safeUser.getId());
 
         log.debug("保存成功");
         log.debug("登录成功");
-        return safeUser;
+        return putToken;
     }
 
     @Override
-    public User updateUserInfo(User update, HttpServletRequest request) {
+    public User updateUserInfo(User update, String token) {
         if (null == update) {
             throw new PermissionDeniedException(ErrorEnum.PARAM_ERROR, "更新为空");
         }
@@ -166,17 +161,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
         }
         // 检查是否可以并获取可更新后的信息
         log.debug("存在! 开始检查是否可以更新");
-        User forUpdate = checkUserForUpdate(update, request);
+        User forUpdate = checkUserForUpdate(update, token);
         log.debug("可以更新 即将开始更新");
         getBaseMapper().updateById(forUpdate);
         log.debug("更新成功");
         // 获取已经修改后的
         User updated = getBaseMapper().selectById(forUpdate.getId());
         // 脱敏
-        User safeUser = createSafeUser(updated);
-        // 保存
-        request.getSession().setAttribute(LOGIN_STATE, safeUser);
-        return safeUser;
+        return createSafeUser(updated);
     }
 
     @Override
@@ -215,12 +207,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
-    public Boolean removeByIdWithUserRole(Long id, HttpServletRequest request) {
+    public Boolean removeByIdWithUserRole(Long id, String token) {
         User removeUser = getBaseMapper().selectById(id);
         if (removeUser == null) {
             throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_FOR_OPERATION_ERROR);
         }
-        User user = getUser(request);
+        User user = getUserByToken(token);
         switch (user.getUserRole()) {
             case DEFAULT_USER -> {
                 log.debug("普通用户{}尝试删除普通用户{}", user.getId(), removeUser.getId());
@@ -254,12 +246,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
      * 检查更新操作是否合法
      *
      * @param user    更新后的用户数据
-     * @param request 请求
+     * @param token token
      * @return 允许更新后的可更新内容
      * @throws PermissionDeniedException 权限不足更新失败时
      */
-    private User checkUserForUpdate(User user, HttpServletRequest request) {
-        User loginUser = getUser(request);
+    private User checkUserForUpdate(User user, String token) {
+        User loginUser = getUserByToken(token);
         // 根据操作者的不同决定不同的更新
         switch (loginUser.getUserRole()) {
             case DEFAULT_USER -> {

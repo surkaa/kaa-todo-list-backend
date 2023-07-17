@@ -6,7 +6,6 @@ import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,21 +43,18 @@ public class UserController {
      * 登录逻辑
      *
      * @param loginRequest 登录请求体
-     * @param request      请求
      * @return {@link ResponseResult}
      */
     @PostMapping("/login")
-    public ResponseResult<User> login(
-            @RequestBody UserLoginRequest loginRequest,
-            HttpServletRequest request
+    public ResponseResult<String> login(
+            @RequestBody UserLoginRequest loginRequest
     ) {
         log.debug("收到登录请求");
-        User safeUser = userService.doLogin(
-                loginRequest,
-                request
+        String token = userService.doLogin(
+                loginRequest
         );
-        log.debug("登陆成功: safeUser={}", safeUser);
-        return ResponseResult.succeed(safeUser);
+        log.debug("登陆成功: token={}", token);
+        return ResponseResult.succeed(token);
     }
 
     @GetMapping("/search")
@@ -78,36 +74,36 @@ public class UserController {
     /**
      * 获取当前登录账号的账号信息
      *
-     * @param request 请求
+     * @param token token
      * @return ResponseResult User 用户信息
      */
     @GetMapping
-    public ResponseResult<User> getSelf(
-            HttpServletRequest request
+    public ResponseResult<User> getUserByToken(
+            String token
     ) {
-        return ResponseResult.succeed(userService.getUser(request));
+        return ResponseResult.succeed(userService.getUserByToken(token));
     }
 
     // TODO 更新密码时也要添加原密码进行验证 可以写一个用于更新的Body
     @PutMapping
     public ResponseResult<User> updateUser(
             @RequestBody User user,
-            HttpServletRequest request
+            String token
     ) {
         log.debug("开始更新用户: {}", user);
         return ResponseResult.succeed(
-                userService.updateUserInfo(user, request)
+                userService.updateUserInfo(user, token)
         );
     }
 
     @DeleteMapping("/{id}")
     public ResponseResult<Object> deleteById(
             @PathVariable Long id,
-            HttpServletRequest request
+            String token
     ) {
         log.debug("收到删除用户: id={}", id);
         return ResponseResult.condition(
-                userService.removeByIdWithUserRole(id, request)
+                userService.removeByIdWithUserRole(id, token)
         );
     }
 }
