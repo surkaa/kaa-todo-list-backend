@@ -11,6 +11,7 @@ public enum ErrorEnum {
     PARAM_ERROR(5000, "参数问题"),
     REQUEST_ERROR(6000, "空请求"),
     NULL_POINTER_ERROR(6005, "空指针"),
+    NOT_LOGIN_ERROR(6099, "请您登录后尝试"),
     REGISTER_ACCOUNT_REPEAT_ERROR(6100, "注册账号已经被使用"),
     REGISTER_ERROR(6101, "注册失败"),
     NOT_FOUND_USER_INFO(6150, "无法获取登录信息"),
