@@ -13,9 +13,6 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.DigestUtils;
-
-import java.nio.charset.StandardCharsets;
 
 /**
  * @author SurKaa
@@ -125,9 +122,7 @@ public interface UserService extends IService<User> {
      */
     default String getEncryptPassword(String originPassword) {
         log.debug("开始获取加密密码");
-        return DigestUtils.md5DigestAsHex(
-                (SALT + originPassword).getBytes(StandardCharsets.UTF_8)
-        );
+        return StringsUtils.md5DigestAsHex(SALT + originPassword);
     }
 
     /**

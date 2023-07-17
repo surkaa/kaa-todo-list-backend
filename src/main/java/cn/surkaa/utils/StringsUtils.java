@@ -1,6 +1,10 @@
 package cn.surkaa.utils;
 
 import cn.hutool.core.util.CharUtil;
+import org.springframework.util.DigestUtils;
+
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * @author SurKaa
@@ -20,6 +24,13 @@ public class StringsUtils {
             }
         }
         return false;
+    }
+
+    public static String md5DigestAsHex(Object o) {
+        Objects.requireNonNull(o);
+        return DigestUtils.md5DigestAsHex(
+                String.valueOf(o).getBytes(StandardCharsets.UTF_8)
+        );
     }
 
 }
