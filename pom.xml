@@ -17,6 +17,7 @@
         <java.version>17</java.version>
 
         <!-- dependency version -->
+        <mybatis.version>3.0.2</mybatis.version>
         <mybatis-plus.version>3.5.3.1</mybatis-plus.version>
         <hutool.version>5.8.18</hutool.version>
     </properties>
@@ -28,7 +29,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>3.0.2</version>
+            <version>${mybatis.version}</version>
         </dependency>
 
         <dependency>
