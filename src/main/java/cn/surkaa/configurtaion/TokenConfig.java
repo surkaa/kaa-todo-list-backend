@@ -20,10 +20,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @EnableScheduling // 开启计划任务的支持
 public class TokenConfig {
 
-    private static final Map<String, TokenInfo> data = new ConcurrentHashMap<>();
+    private static final Map<String, TokenInfo> DATA
+            = new ConcurrentHashMap<>();
 
     // 登陆过期的时间: 一小时
-    private static final long OVERDUE_TIME = 360_0000L;
+    public static final long OVERDUE_TIME = 3_600_000L;
 
     /**
      * 存放用户登录了的信息
@@ -35,8 +36,8 @@ public class TokenConfig {
         TokenInfo user = new TokenInfo(id);
         String token = StringsUtils.md5DigestAsHex(id + System.currentTimeMillis());
         log.debug("存放登录用户: token: {}, user: {}, 当前登录用户池数量: {}",
-                token, user, data.size() + 1);
-        data.put(token, user);
+                token, user, DATA.size() + 1);
+        DATA.put(token, user);
         return token;
     }
 
@@ -47,7 +48,7 @@ public class TokenConfig {
      * @return 是否存在
      */
     public static boolean check(String token) {
-        return data.containsKey(token);
+        return DATA.containsKey(token);
     }
 
     /**
@@ -58,7 +59,7 @@ public class TokenConfig {
      */
     public static Long getLoginId(String token) {
         if (check(token)) {
-            TokenInfo tokenInfo = data.get(token);
+            TokenInfo tokenInfo = DATA.get(token);
             log.debug("获取token登录用户: {}", tokenInfo);
             return tokenInfo.getId();
         }
@@ -71,10 +72,10 @@ public class TokenConfig {
     @Scheduled(cron = "0/60 * *  * * ? ")
     public void removeOverdueToken() {
         long currented = System.currentTimeMillis();
-        data.forEach((s, tokenInfo) -> {
-            if (currented - tokenInfo.getTime() > OVERDUE_TIME) {
+        DATA.forEach((s, tokenInfo) -> {
+            if (currented > tokenInfo.getTime()) {
                 log.debug("token:{} 将被移除", s);
-                data.remove(s);
+                DATA.remove(s);
             }
         });
     }
