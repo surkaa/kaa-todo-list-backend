@@ -1,6 +1,7 @@
 package cn.surkaa.interceptor;
 
 import cn.hutool.core.util.StrUtil;
+import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,6 +26,11 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
         log.debug("开始检测是否登录");
         String token = request.getHeader("token");
         if (!StrUtil.isBlank(token)) {
+            log.debug("含有token!");
+            if (!TokenConfig.check(token)) {
+                log.debug("但是是过期的token");
+                throw new UserCenterException(ErrorEnum.ILLEGAL_TOKEN_ERROR);
+            }
             log.debug("已经登录!");
             return true;
         }

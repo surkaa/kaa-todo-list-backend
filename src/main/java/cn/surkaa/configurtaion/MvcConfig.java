@@ -25,14 +25,6 @@ public class MvcConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowCredentials(false)
-                .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE")
-                .allowedOrigins("*");
-    }
-
-    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         // 添加记录所有请求的拦截器
         registry.addInterceptor(new UserAgentInterceptor());

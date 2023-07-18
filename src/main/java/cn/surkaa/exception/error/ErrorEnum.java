@@ -17,7 +17,7 @@ public enum ErrorEnum {
     NOT_FOUND_USER_INFO(6150, "无法获取登录信息"),
     LOGIN_NOTFOUND_USER_ERROR(6200, "没有找到要登陆的用户"),
     LOGIN_PASSWORD_ERROR(6201, "登录密码错误"),
-    ILLEGAL_TOKEN_ERROR(6300, "非法token"),
+    ILLEGAL_TOKEN_ERROR(6300, "token已经过期"),
     NOT_FOUND_USER_ROLE_ERROR(6999, "用户角色非法"),
     OPERATION_DENIED_ERROR(7000, "操作权限不足"),
     NOT_FOUND_USER_FOR_OPERATION_ERROR(7099, "没有找到用户数据"),
