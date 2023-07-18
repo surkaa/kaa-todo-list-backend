@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @EnableScheduling // 开启计划任务的支持
 public class TokenConfig {
 
+    // TODO 是否可以将用户放入 是否对重复登陆的用户进行检测
     private static final Map<String, TokenInfo> DATA
             = new ConcurrentHashMap<>();
 
@@ -67,9 +68,9 @@ public class TokenConfig {
     }
 
     /**
-     * 每分钟执行一次
+     * 每五分钟执行一次
      */
-    @Scheduled(cron = "0/60 * *  * * ? ")
+    @Scheduled(fixedDelay = 300_000L)
     public void removeOverdueToken() {
         long currented = System.currentTimeMillis();
         DATA.forEach((s, tokenInfo) -> {
