@@ -10,9 +10,9 @@ import lombok.Data;
 
 /**
  * @author SurKaa
- * @TableName todolist
+ * @TableName todo
  */
-@TableName(value = "todolist")
+@TableName(value = "todo")
 @Data
 public class Todo implements Serializable {
 
