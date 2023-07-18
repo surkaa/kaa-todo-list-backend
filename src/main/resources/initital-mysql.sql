@@ -24,3 +24,18 @@ create table if not exists user
 # 添加用户角色列
 alter table user
     add user_role tinyint default 0 not null comment '用户角色';
+
+create table todolist
+(
+    id          bigint auto_increment                    not null comment '主键',
+    uid         bigint                                   not null comment '创建该笔记的用户id',
+    title       varchar(512)   default ''                not null comment '笔记标题',
+    description varchar(4096) default ''                not null comment '笔记细节',
+    note_status tinyint        default 0                 not null comment '笔记状态 0 未完成 1 已经完成',
+    is_delete   tinyint        default 0                 not null comment '是否被删除了',
+    create_time datetime       default CURRENT_TIMESTAMP null comment '创建时间',
+    update_time datetime       default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
+    target_tile datetime       default (DATE_ADD(NOW(), interval 7 day)) comment '预计完成时间',
+    primary key (id),
+    foreign key (uid) references user (id)
+);
