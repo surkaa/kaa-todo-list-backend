@@ -25,10 +25,11 @@ create table if not exists user
 alter table user
     add user_role tinyint default 0 not null comment '用户角色';
 
-create table todolist
+create table todo
 (
     id          bigint auto_increment                   not null comment '主键',
     uid         bigint                                  not null comment '创建该笔记的用户id',
+    flag        tinyint       default 0                 not null comment '是否完成这个笔记',
     title       varchar(512)  default ''                not null comment '笔记标题',
     description varchar(4096) default ''                not null comment '笔记细节',
     note_status tinyint       default 0                 not null comment '笔记状态 0 未完成 1 已经完成',

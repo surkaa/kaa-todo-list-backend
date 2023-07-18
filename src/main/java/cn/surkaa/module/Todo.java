@@ -32,6 +32,11 @@ public class Todo implements Serializable {
     private Long uid;
 
     /**
+     * 是否完成这个笔记
+     */
+    private int flag;
+
+    /**
      * 笔记标题
      */
     private String title;

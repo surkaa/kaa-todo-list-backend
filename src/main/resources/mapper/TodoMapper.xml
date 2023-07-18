@@ -7,6 +7,7 @@
     <resultMap id="BaseResultMap" type="cn.surkaa.module.Todo">
         <id property="id" column="id" jdbcType="BIGINT"/>
         <result property="uid" column="uid" jdbcType="BIGINT"/>
+        <result property="flag" column="flag" jdbcType="TINYINT"/>
         <result property="title" column="title" jdbcType="VARCHAR"/>
         <result property="description" column="description" jdbcType="VARCHAR"/>
         <result property="noteStatus" column="note_status" jdbcType="TINYINT"/>
@@ -18,7 +19,7 @@
 
     <sql id="Base_Column_List">
         id
-        ,uid,title,
+        ,uid,title, flag
         description,note_status,is_delete,
         create_time,update_time,target_tile
     </sql>
