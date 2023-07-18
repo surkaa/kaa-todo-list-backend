@@ -7,9 +7,6 @@ package cn.surkaa.contant;
  */
 public interface UserContant {
 
-    // 保存在session中的登录状态 -------------------------------------------------------
-    String LOGIN_STATE = "login_state";
-
     // 用户权限 -------------------------------------------------------------------
 
     /**

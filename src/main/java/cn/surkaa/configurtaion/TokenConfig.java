@@ -27,6 +27,9 @@ public class TokenConfig {
     // 登陆过期的时间: 一小时
     public static final long OVERDUE_TIME = 3_600_000L;
 
+    // 从头部中获取token的配置
+    public static final String MY_TOKEN = "token";
+
     /**
      * 存放用户登录了的信息
      *

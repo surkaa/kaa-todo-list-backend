@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import static cn.surkaa.configurtaion.TokenConfig.MY_TOKEN;
+
 /**
  * 用于检查请求是否登录的拦截器
  *
@@ -24,7 +26,7 @@ public class CheckLoginInterceptor implements HandlerInterceptor {
             Object handler
     ) {
         log.debug("开始检测是否登录");
-        String token = request.getHeader("token");
+        String token = request.getHeader(MY_TOKEN);
         if (!StrUtil.isBlank(token)) {
             log.debug("含有token!");
             if (!TokenConfig.check(token)) {

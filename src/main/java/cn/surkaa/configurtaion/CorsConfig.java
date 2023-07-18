@@ -7,6 +7,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import static cn.surkaa.configurtaion.TokenConfig.MY_TOKEN;
+
 /**
  * 跨域
  *
@@ -26,7 +28,7 @@ public class CorsConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         // 允许token头部
-        config.addExposedHeader("token");
+        config.addExposedHeader(MY_TOKEN);
         source.registerCorsConfiguration("/**", config);
         FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
         // 这个顺序很重要哦，为避免麻烦请设置在最前

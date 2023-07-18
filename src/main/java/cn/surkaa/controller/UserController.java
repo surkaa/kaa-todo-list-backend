@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import static cn.surkaa.configurtaion.TokenConfig.MY_TOKEN;
+
 /**
  * @author SurKaa
  */
@@ -81,7 +83,7 @@ public class UserController {
     public ResponseResult<User> getUserByToken(
             HttpServletRequest request
     ) {
-        String token = request.getHeader("token");
+        String token = request.getHeader(MY_TOKEN);
         log.debug("getUserByToken: {}", token);
         return ResponseResult.succeed(userService.getUserByToken(token));
     }
