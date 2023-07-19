@@ -64,7 +64,7 @@ public class TodoController {
         Long userId = TokenConfig.getLoginId(token);
         log.debug("flagTodo: todoFlag={}, userId={}", todoFlag, userId);
         return ResponseResult.succeed(
-                todoService.flagTodo(userId, todoFlag)
+                todoService.modifyFlagTodo(userId, todoFlag)
         );
     }
 

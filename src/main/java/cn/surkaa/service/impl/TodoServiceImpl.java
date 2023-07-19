@@ -61,7 +61,7 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
     }
 
     @Override
-    public boolean flagTodo(Long userId, TodoFlagRequest todoFlag) {
+    public boolean modifyFlagTodo(Long userId, TodoFlagRequest todoFlag) {
         log.debug("开始标记todo");
         Todo todo = new Todo();
         todo.setId(todoFlag.getId());

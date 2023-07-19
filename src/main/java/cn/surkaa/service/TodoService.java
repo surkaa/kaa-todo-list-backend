@@ -30,6 +30,6 @@ public interface TodoService extends IService<Todo> {
      */
     Long saveTodoWithToken(Long userId, Todo todo);
 
-    boolean flagTodo(Long userId, TodoFlagRequest todoFlag);
+    boolean modifyFlagTodo(Long userId, TodoFlagRequest todoFlag);
 
 }
