@@ -19,7 +19,7 @@ import static cn.surkaa.configurtaion.TokenConfig.MY_TOKEN;
  */
 @Slf4j
 @RestController
-@RequestMapping("/todo")
+@RequestMapping("/todos")
 public class TodoController {
 
     private final TodoService todoService;
