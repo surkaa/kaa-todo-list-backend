@@ -60,6 +60,15 @@ public class UserController {
         return ResponseResult.succeed(token);
     }
 
+    @PostMapping
+    public ResponseResult<Object> logout(
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        log.debug("logout: {}", token);
+        return ResponseResult.succeed(userService.logout(token));
+    }
+
     @GetMapping("/search")
     public ResponseResult<IPage<User>> searchUserWithUsername(
             String username,

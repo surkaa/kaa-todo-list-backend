@@ -71,6 +71,15 @@ public class TokenConfig {
     }
 
     /**
+     * 根据token移除对应用户
+     * @param token token
+     * @return 是否移除成功
+     */
+    public static boolean remove(String token) {
+        return DATA.remove(token) != null;
+    }
+
+    /**
      * 每五分钟执行一次
      */
     @Scheduled(fixedDelay = 300_000L)

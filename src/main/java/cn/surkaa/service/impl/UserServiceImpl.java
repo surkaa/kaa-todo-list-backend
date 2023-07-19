@@ -147,6 +147,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User>
     }
 
     @Override
+    public boolean logout(String token) {
+        return TokenConfig.remove(token);
+    }
+
+    @Override
     public User updateUserInfo(User update, String token) {
         if (null == update) {
             throw new PermissionDeniedException(ErrorEnum.PARAM_ERROR, "更新为空");

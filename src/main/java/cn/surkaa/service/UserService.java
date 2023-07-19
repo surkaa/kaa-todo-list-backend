@@ -63,6 +63,13 @@ public interface UserService extends IService<User> {
     String doLogin(UserLoginRequest loginRequest);
 
     /**
+     * 登出
+     * @param token token
+     * @return 成功与否
+     */
+    boolean logout(String token);
+
+    /**
      * 根据当前用户的角色(等级)修改信息
      *
      * <h2>修改规则:</h2>
