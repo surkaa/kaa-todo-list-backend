@@ -2,8 +2,8 @@ package cn.surkaa.controller;
 
 import cn.surkaa.module.domain.User;
 import cn.surkaa.module.utils.ResponseResult;
-import cn.surkaa.module.request.UserLoginRequest;
-import cn.surkaa.module.request.UserRegisterRequest;
+import cn.surkaa.module.request.user.UserLoginRequest;
+import cn.surkaa.module.request.user.UserRegisterRequest;
 import cn.surkaa.service.UserService;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.servlet.http.HttpServletRequest;

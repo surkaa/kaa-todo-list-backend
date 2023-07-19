@@ -4,7 +4,7 @@ import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.TodoMapper;
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.TodoFlagRequest;
+import cn.surkaa.module.request.todo.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;

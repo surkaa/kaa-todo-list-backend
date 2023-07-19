@@ -1,7 +1,7 @@
 package cn.surkaa.service;
 
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.TodoFlagRequest;
+import cn.surkaa.module.request.todo.TodoFlagRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package cn.surkaa.module.request;
+package cn.surkaa.module.request.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
