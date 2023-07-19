@@ -112,9 +112,12 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseResult<Object> deleteById(
             @PathVariable Long id,
-            String token
+            HttpServletRequest request
     ) {
+        // TODO 谨慎操作 现在删除仅是将is_delete设置成1但是数据库中仍存在
+        // TODO 不过这并未处理Todo表中的对应数据删除
         log.debug("收到删除用户: id={}", id);
+        String token = request.getHeader(MY_TOKEN);
         return ResponseResult.condition(
                 userService.removeByIdWithUserRole(id, token)
         );

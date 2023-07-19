@@ -72,6 +72,7 @@ public class TokenConfig {
 
     /**
      * 根据token移除对应用户
+     *
      * @param token token
      * @return 是否移除成功
      */

@@ -117,7 +117,7 @@ public interface UserService extends IService<User> {
             return createSafeUser(user);
         } catch (Exception e) {
             throw new UserCenterException(ErrorEnum.NOT_FOUND_USER_INFO,
-                    "您可能尚未未登录");
+                    "您可能尚未未登录, 或者登陆过期吗请尝试重新登陆");
         }
     }
 
