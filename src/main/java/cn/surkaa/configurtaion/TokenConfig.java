@@ -62,6 +62,9 @@ public class TokenConfig {
      * @return id
      */
     public static Long getLoginId(String token) {
+        if (token == null) {
+            throw new UserCenterException(ErrorEnum.NOT_LOGIN_ERROR);
+        }
         if (check(token)) {
             TokenInfo tokenInfo = DATA.get(token);
             log.debug("获取token登录用户: {}", tokenInfo);
