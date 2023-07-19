@@ -5,7 +5,7 @@ import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
-import cn.surkaa.module.User;
+import cn.surkaa.module.domain.User;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.utils.StringsUtils;

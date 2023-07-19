@@ -1,6 +1,6 @@
 package cn.surkaa.mapper;
 
-import cn.surkaa.module.UserAvatar;
+import cn.surkaa.module.domain.UserAvatar;
 import com.baomidou.mybatisplus.extension.plugins.pagination.PageDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package cn.surkaa.module;
+package cn.surkaa.module.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

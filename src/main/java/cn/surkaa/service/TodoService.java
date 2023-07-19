@@ -1,6 +1,6 @@
 package cn.surkaa.service;
 
-import cn.surkaa.module.Todo;
+import cn.surkaa.module.domain.Todo;
 import cn.surkaa.module.request.TodoFlagRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 

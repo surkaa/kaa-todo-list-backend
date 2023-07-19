@@ -1,6 +1,6 @@
 package cn.surkaa.controller;
 
-import cn.surkaa.module.User;
+import cn.surkaa.module.domain.User;
 import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;

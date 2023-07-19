@@ -7,7 +7,7 @@ import cn.surkaa.exception.PermissionDeniedException;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.UserMapper;
-import cn.surkaa.module.User;
+import cn.surkaa.module.domain.User;
 import cn.surkaa.module.request.UserLoginRequest;
 import cn.surkaa.module.request.UserRegisterRequest;
 import cn.surkaa.service.UserService;

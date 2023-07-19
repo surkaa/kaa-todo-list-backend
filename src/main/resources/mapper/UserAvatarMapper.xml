@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.surkaa.mapper.UserAvatarMapper">
 
-    <resultMap id="BaseResultMap" type="cn.surkaa.module.UserAvatar">
+    <resultMap id="BaseResultMap" type="cn.surkaa.module.domain.UserAvatar">
             <id property="id" column="id" jdbcType="BIGINT"/>
     </resultMap>
 

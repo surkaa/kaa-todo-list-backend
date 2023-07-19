@@ -1,6 +1,6 @@
 package cn.surkaa.mapper;
 
-import cn.surkaa.module.UserAvatar;
+import cn.surkaa.module.domain.UserAvatar;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
