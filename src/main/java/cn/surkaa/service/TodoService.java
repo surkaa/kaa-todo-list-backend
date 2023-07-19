@@ -20,4 +20,13 @@ public interface TodoService extends IService<Todo> {
      */
     List<Todo> getAllTodoByToken(Long userId);
 
+    /**
+     * 通过token以及Todo保存todo
+     *
+     * @param userId 用户id
+     * @param todo   信息
+     * @return 是否保存成功
+     */
+    Long saveTodoWithToken(Long userId, Todo todo);
+
 }

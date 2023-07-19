@@ -1,10 +1,13 @@
 package cn.surkaa.service.impl;
 
+import cn.surkaa.exception.UserCenterException;
+import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.TodoMapper;
 import cn.surkaa.module.Todo;
 import cn.surkaa.service.TodoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,7 @@ import java.util.List;
  * @createDate 2023-07-18 15:13:16
  */
 @Service
+@Slf4j
 public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
         implements TodoService {
 
@@ -23,6 +27,36 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
         var lqw = new LambdaQueryWrapper<Todo>();
         lqw.eq(Todo::getUid, userId);
         return getBaseMapper().selectList(lqw);
+    }
+
+    @Override
+    public Long saveTodoWithToken(Long userId, Todo todo) {
+        if (todo.getId() != null) {
+            throw new UserCenterException(
+                    ErrorEnum.INSERT_TODO_ERROR, "请不要带上id"
+            );
+        }
+        if (todo.getTitle() == null) {
+            throw new UserCenterException(
+                    ErrorEnum.INSERT_TODO_ERROR, "请提供笔记标题"
+            );
+        }
+        Long uid = todo.getUid();
+        if (uid == null) {
+            todo.setUid(userId);
+        } else if (!uid.equals(userId)) {
+            throw new UserCenterException(
+                    ErrorEnum.INSERT_TODO_ERROR, "您无法为其他人保存待办事项");
+        }
+        log.debug("开始保存Todo");
+        boolean flag = this.save(todo);
+        if (flag) {
+            log.debug("保存成功");
+            return todo.getId();
+        } else {
+            log.debug("保存失败");
+            throw new UserCenterException(ErrorEnum.INSERT_TODO_ERROR);
+        }
     }
 }
 

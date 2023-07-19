@@ -6,9 +6,7 @@ import cn.surkaa.module.request.ResponseResult;
 import cn.surkaa.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,6 +39,19 @@ public class TodoController {
         log.debug("get todolist, token: {}", token);
         Long userId = TokenConfig.getLoginId(token);
         return ResponseResult.succeed(todoService.getAllTodoByToken(userId));
+    }
+
+    @PostMapping
+    public ResponseResult<Long> saveTodo(
+            @RequestBody Todo todo,
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        Long userId = TokenConfig.getLoginId(token);
+        log.debug("saveTodo: userId={}, todo={}", userId, todo);
+        return ResponseResult.succeed(
+                todoService.saveTodoWithToken(userId, todo)
+        );
     }
 
 }
