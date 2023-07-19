@@ -4,6 +4,7 @@ import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.TodoMapper;
 import cn.surkaa.module.Todo;
+import cn.surkaa.module.request.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -56,6 +57,26 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
         } else {
             log.debug("保存失败");
             throw new UserCenterException(ErrorEnum.INSERT_TODO_ERROR);
+        }
+    }
+
+    @Override
+    public boolean flagTodo(Long userId, TodoFlagRequest todoFlag) {
+        log.debug("开始标记todo");
+        Todo todo = new Todo();
+        todo.setId(todoFlag.getId());
+        todo.setUid(userId);
+        todo.setFlag(todoFlag.getFlag() ? 1 : 0);
+        log.debug("标记成功: {}, 开始更新", todo);
+        boolean res = this.updateById(todo);
+        if (res) {
+            log.debug("更新成功");
+            return true;
+        } else {
+            log.debug("更新失败");
+            throw new UserCenterException(
+                    ErrorEnum.UPDATE_TODO_ERROR
+            );
         }
     }
 }

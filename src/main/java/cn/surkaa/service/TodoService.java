@@ -1,6 +1,7 @@
 package cn.surkaa.service;
 
 import cn.surkaa.module.Todo;
+import cn.surkaa.module.request.TodoFlagRequest;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -28,5 +29,7 @@ public interface TodoService extends IService<Todo> {
      * @return 是否保存成功
      */
     Long saveTodoWithToken(Long userId, Todo todo);
+
+    boolean flagTodo(Long userId, TodoFlagRequest todoFlag);
 
 }

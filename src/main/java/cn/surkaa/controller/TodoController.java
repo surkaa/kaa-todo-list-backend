@@ -3,6 +3,7 @@ package cn.surkaa.controller;
 import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.module.Todo;
 import cn.surkaa.module.request.ResponseResult;
+import cn.surkaa.module.request.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,19 @@ public class TodoController {
         log.debug("saveTodo: userId={}, todo={}", userId, todo);
         return ResponseResult.succeed(
                 todoService.saveTodoWithToken(userId, todo)
+        );
+    }
+
+    @PostMapping("/flag")
+    public ResponseResult<Boolean> flagTodo(
+            @RequestBody TodoFlagRequest todoFlag,
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        Long userId = TokenConfig.getLoginId(token);
+        log.debug("flagTodo: todoFlag={}, userId={}", todoFlag, userId);
+        return ResponseResult.succeed(
+                todoService.flagTodo(userId, todoFlag)
         );
     }
 
