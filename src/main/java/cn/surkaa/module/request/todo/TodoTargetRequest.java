@@ -3,12 +3,12 @@ package cn.surkaa.module.request.todo;
 import lombok.Data;
 
 /**
- * 用于
+ * 修改预计完成时间的请求体
  *
  * @author SurKaa
  */
 @Data
-public class TodoTitleRequest {
+public class TodoTargetRequest {
     Long id;
-    String title;
+    String target;
 }

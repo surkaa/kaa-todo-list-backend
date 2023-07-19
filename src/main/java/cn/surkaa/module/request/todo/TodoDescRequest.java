@@ -3,12 +3,12 @@ package cn.surkaa.module.request.todo;
 import lombok.Data;
 
 /**
- * 用于
+ * 用于修改详细描述的请求体
  *
  * @author SurKaa
  */
 @Data
-public class TodoTitleRequest {
+public class TodoDescRequest {
     Long id;
-    String title;
+    String description;
 }
