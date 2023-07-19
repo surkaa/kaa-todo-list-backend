@@ -34,7 +34,7 @@ public class Todo implements Serializable {
     /**
      * 是否完成这个笔记
      */
-    private int flag;
+    private Integer flag;
 
     /**
      * 笔记标题
