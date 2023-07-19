@@ -112,7 +112,7 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
         String target = todoTarget.getTarget();
         try {
             Date parse = SDF.parse(target);
-            todo.setTargetTile(parse);
+            todo.setTargetTime(parse);
             log.debug("修改成功: {}, 开始更新", todo);
             return updateOneField(todo);
         } catch (ParseException e) {

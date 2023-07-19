@@ -14,7 +14,7 @@
         <result property="isDelete" column="is_delete" jdbcType="TINYINT"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
-        <result property="targetTile" column="target_tile" jdbcType="TIMESTAMP"/>
+        <result property="targetTime" column="target_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">

@@ -64,7 +64,7 @@ public class Todo implements Serializable {
     /**
      * 预计完成时间
      */
-    private Date targetTile;
+    private Date targetTime;
 
     /**
      * 是否被删除了
