@@ -2,7 +2,7 @@ package cn.surkaa.controller;
 
 import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.ResponseResult;
+import cn.surkaa.module.utils.ResponseResult;
 import cn.surkaa.module.request.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;

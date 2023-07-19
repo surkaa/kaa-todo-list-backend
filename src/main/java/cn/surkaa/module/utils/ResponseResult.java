@@ -1,4 +1,4 @@
-package cn.surkaa.module.request;
+package cn.surkaa.module.utils;
 
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;

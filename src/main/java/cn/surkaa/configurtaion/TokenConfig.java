@@ -2,7 +2,7 @@ package cn.surkaa.configurtaion;
 
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
-import cn.surkaa.module.TokenInfo;
+import cn.surkaa.module.utils.TokenInfo;
 import cn.surkaa.utils.StringsUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;

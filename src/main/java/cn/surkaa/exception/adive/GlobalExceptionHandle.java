@@ -4,7 +4,7 @@ import cn.surkaa.exception.AuthenticationException;
 import cn.surkaa.exception.PermissionDeniedException;
 import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
-import cn.surkaa.module.request.ResponseResult;
+import cn.surkaa.module.utils.ResponseResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

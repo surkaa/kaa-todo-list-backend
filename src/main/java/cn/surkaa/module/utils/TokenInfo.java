@@ -1,4 +1,4 @@
-package cn.surkaa.module;
+package cn.surkaa.module.utils;
 
 import lombok.Data;
 
