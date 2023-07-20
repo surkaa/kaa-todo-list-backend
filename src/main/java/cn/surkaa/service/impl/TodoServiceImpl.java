@@ -5,10 +5,7 @@ import cn.surkaa.exception.UserCenterException;
 import cn.surkaa.exception.error.ErrorEnum;
 import cn.surkaa.mapper.TodoMapper;
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.todo.TodoDescRequest;
-import cn.surkaa.module.request.todo.TodoFlagRequest;
-import cn.surkaa.module.request.todo.TodoTargetRequest;
-import cn.surkaa.module.request.todo.TodoTitleRequest;
+import cn.surkaa.module.request.todo.*;
 import cn.surkaa.service.TodoService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -41,25 +38,32 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
     }
 
     @Override
-    public Long saveTodoWithToken(Long userId, Todo todo) {
-        if (todo.getId() != null) {
-            throw new UserCenterException(
-                    ErrorEnum.INSERT_TODO_ERROR, "请不要带上id"
-            );
-        }
-        if (todo.getTitle() == null) {
+    public Long saveTodoWithToken(Long userId, TodoSaveBody todoSaveBody) {
+        if (todoSaveBody.getTitle() == null) {
             throw new UserCenterException(
                     ErrorEnum.INSERT_TODO_ERROR, "请提供笔记标题"
             );
         }
-        Long uid = todo.getUid();
-        if (uid == null) {
-            todo.setUid(userId);
-        } else if (!uid.equals(userId)) {
-            throw new UserCenterException(
-                    ErrorEnum.INSERT_TODO_ERROR, "您无法为其他人保存待办事项");
+        Todo todo = new Todo();
+        todo.setUid(userId);
+        todo.setTitle(todoSaveBody.getTitle());
+        String description = todoSaveBody.getDescription();
+        if (description != null) {
+            todo.setDescription(description);
         }
-        log.debug("开始保存Todo");
+        Long dateUnix = todoSaveBody.getTargetTime();
+        if (dateUnix != null) {
+            if (dateUnix <= new Date().getTime()) {
+                log.debug("传入的时间不对劲!");
+                throw new UserCenterException(
+                        ErrorEnum.INSERT_TODO_ERROR,
+                        "预计完成时间过近或者已经过了预计时间"
+                );
+            }
+            Date date = new Date(dateUnix);
+            log.debug("解析时间: {}", date);
+            todo.setTargetTime(date);
+        }
         boolean flag = this.save(todo);
         if (flag) {
             log.debug("保存成功");

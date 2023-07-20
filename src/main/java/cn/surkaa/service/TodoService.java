@@ -1,10 +1,7 @@
 package cn.surkaa.service;
 
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.todo.TodoDescRequest;
-import cn.surkaa.module.request.todo.TodoFlagRequest;
-import cn.surkaa.module.request.todo.TodoTargetRequest;
-import cn.surkaa.module.request.todo.TodoTitleRequest;
+import cn.surkaa.module.request.todo.*;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.List;
@@ -31,7 +28,7 @@ public interface TodoService extends IService<Todo> {
      * @param todo   信息
      * @return 是否保存成功
      */
-    Long saveTodoWithToken(Long userId, Todo todo);
+    Long saveTodoWithToken(Long userId, TodoSaveBody todo);
 
     boolean modifyFlagTodo(Long userId, TodoFlagRequest todoFlag);
 

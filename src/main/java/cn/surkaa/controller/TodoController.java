@@ -2,6 +2,7 @@ package cn.surkaa.controller;
 
 import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.module.domain.Todo;
+import cn.surkaa.module.request.todo.TodoSaveBody;
 import cn.surkaa.module.utils.ResponseResult;
 import cn.surkaa.module.request.todo.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
@@ -44,14 +45,14 @@ public class TodoController {
 
     @PostMapping
     public ResponseResult<Long> saveTodo(
-            @RequestBody Todo todo,
+            @RequestBody TodoSaveBody saveBody,
             HttpServletRequest request
     ) {
         String token = request.getHeader(MY_TOKEN);
         Long userId = TokenConfig.getLoginId(token);
-        log.debug("saveTodo: userId={}, todo={}", userId, todo);
+        log.debug("saveTodo: userId={}, saveBody={}", userId, saveBody);
         return ResponseResult.succeed(
-                todoService.saveTodoWithToken(userId, todo)
+                todoService.saveTodoWithToken(userId, saveBody)
         );
     }
 
