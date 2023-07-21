@@ -52,7 +52,7 @@ public class TodoServiceImpl extends ServiceImpl<TodoMapper, Todo>
             todo.setDescription(description);
         }
         Long dateUnix = todoSaveBody.getTargetTime();
-        if (dateUnix != null) {
+        if (dateUnix != null && dateUnix != 0L) {
             if (dateUnix <= new Date().getTime()) {
                 log.debug("传入的时间不对劲!");
                 throw new UserCenterException(

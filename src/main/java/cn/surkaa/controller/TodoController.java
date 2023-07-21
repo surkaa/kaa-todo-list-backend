@@ -2,9 +2,8 @@ package cn.surkaa.controller;
 
 import cn.surkaa.configurtaion.TokenConfig;
 import cn.surkaa.module.domain.Todo;
-import cn.surkaa.module.request.todo.TodoSaveBody;
+import cn.surkaa.module.request.todo.*;
 import cn.surkaa.module.utils.ResponseResult;
-import cn.surkaa.module.request.todo.TodoFlagRequest;
 import cn.surkaa.service.TodoService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -66,6 +65,45 @@ public class TodoController {
         log.debug("flagTodo: todoFlag={}, userId={}", todoFlag, userId);
         return ResponseResult.succeed(
                 todoService.modifyFlagTodo(userId, todoFlag)
+        );
+    }
+
+    @PostMapping("/title")
+    public ResponseResult<Boolean> titleTodo(
+            @RequestBody TodoTitleRequest todoTitle,
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        Long userId = TokenConfig.getLoginId(token);
+        log.debug("flagTodo: todoTitle={}, userId={}", todoTitle, userId);
+        return ResponseResult.succeed(
+                todoService.modifyTitleTodo(userId, todoTitle)
+        );
+    }
+
+    @PostMapping("/desc")
+    public ResponseResult<Boolean> descTodo(
+            @RequestBody TodoDescRequest todoDesc,
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        Long userId = TokenConfig.getLoginId(token);
+        log.debug("flagTodo: todoDesc={}, userId={}", todoDesc, userId);
+        return ResponseResult.succeed(
+                todoService.modifyDescTodo(userId, todoDesc)
+        );
+    }
+
+    @PostMapping("/target")
+    public ResponseResult<Boolean> targetTodo(
+            @RequestBody TodoTargetRequest todoTarget,
+            HttpServletRequest request
+    ) {
+        String token = request.getHeader(MY_TOKEN);
+        Long userId = TokenConfig.getLoginId(token);
+        log.debug("flagTodo: todoTarget={}, userId={}", todoTarget, userId);
+        return ResponseResult.succeed(
+                todoService.modifyTargetTodo(userId, todoTarget)
         );
     }
 
