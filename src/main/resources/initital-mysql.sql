@@ -36,7 +36,7 @@ create table todo
     is_delete   tinyint       default 0                 not null comment '是否被删除了',
     create_time datetime      default CURRENT_TIMESTAMP null comment '创建时间',
     update_time datetime      default CURRENT_TIMESTAMP null on update CURRENT_TIMESTAMP comment '更新时间',
-    target_tile datetime      default (DATE_ADD(NOW(), interval 7 day)) comment '预计完成时间',
+    target_time datetime      default (DATE_ADD(NOW(), interval 7 day)) comment '预计完成时间',
     primary key (id),
     foreign key (uid) references user (id)
 );
